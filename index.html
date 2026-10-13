@@ -3,7 +3,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f5f0e8">
 <title>Mini Code Studio</title>
 
@@ -13,291 +13,319 @@
 
 <style>
 :root {
-  --bg: #f5f0e8;
-  --paper: #fffdf8;
-  --ink: #171717;
-  --blue: #b8d8ff;
-  --yellow: #ffe66d;
-  --pink: #ffb8c6;
-  --green: #b9f5c7;
-  --border: 3px solid var(--ink);
-  --shadow: 5px 5px 0 var(--ink);
+  --bg:#f5f0e8;
+  --paper:#fffdf8;
+  --ink:#171717;
+  --blue:#b8d8ff;
+  --yellow:#ffe66d;
+  --pink:#ffb8c6;
+  --green:#b9f5c7;
+  --border:3px solid var(--ink);
+  --shadow:5px 5px 0 var(--ink);
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Space Grotesk", sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Space Grotesk",sans-serif;
 }
 
-button, input, textarea { font: inherit; }
-
 button {
-  border: var(--border);
-  background: var(--paper);
-  color: var(--ink);
-  font-weight: 700;
-  padding: 10px 13px;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 var(--ink);
-  transition: transform .12s, box-shadow .12s;
+  font:inherit;
+  font-weight:700;
+  color:var(--ink);
+  background:var(--paper);
+  border:var(--border);
+  padding:10px 13px;
+  cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);
 }
 
 button:active {
-  transform: translate(3px,3px);
-  box-shadow: none;
+  transform:translate(2px,2px);
+  box-shadow:1px 1px 0 var(--ink);
 }
 
-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
+button:disabled { opacity:.5; }
 
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding: 18px;
-  border-bottom: var(--border);
-  background: var(--yellow);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:16px;
+  background:var(--yellow);
+  border-bottom:var(--border);
 }
 
 .brand {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-1px;
 }
 
-.brand span { color: #315fd8; }
+.brand span { color:#315fd8; }
 
 .subtitle {
-  margin-top: 3px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size:12px;
+  font-weight:600;
+  margin-top:3px;
 }
 
-.top-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
+.actions,.tools {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
 }
 
-.primary { background: var(--green); }
-.blue { background: var(--blue); }
-.pink { background: var(--pink); }
+.primary { background:var(--green); }
+.blue { background:var(--blue); }
+.pink { background:var(--pink); }
 
 .app {
-  width: min(1400px, 100%);
-  margin: auto;
-  padding: 18px;
+  width:min(1400px,100%);
+  margin:auto;
+  padding:18px;
 }
 
 .section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:16px;
 }
 
 .section-head h1 {
-  font-size: clamp(24px, 5vw, 38px);
-  margin: 0;
-  letter-spacing: -1.5px;
+  font-size:clamp(25px,5vw,38px);
+  letter-spacing:-1.5px;
+  margin:0;
 }
 
 .tag {
-  display: inline-block;
-  padding: 6px 10px;
-  border: 2px solid var(--ink);
-  background: var(--paper);
-  font-size: 11px;
-  font-weight: 700;
+  display:inline-block;
+  border:2px solid var(--ink);
+  background:var(--paper);
+  padding:5px 9px;
+  font-size:11px;
+  font-weight:700;
 }
 
 .workspace {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 17px;
-  align-items: start;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:17px;
+  align-items:start;
 }
 
 .panel {
-  min-width: 0;
-  overflow: hidden;
-  background: var(--paper);
-  border: var(--border);
-  box-shadow: var(--shadow);
+  min-width:0;
+  overflow:hidden;
+  border:var(--border);
+  background:var(--paper);
+  box-shadow:var(--shadow);
 }
 
 .panel-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 12px;
-  border-bottom: var(--border);
-  background: var(--blue);
-  font-weight: 700;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:12px;
+  background:var(--blue);
+  border-bottom:var(--border);
+  font-weight:700;
 }
 
-.editor-tabs {
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-  background: #e9e5dd;
-  border-bottom: var(--border);
+.tabs {
+  display:flex;
+  border-bottom:var(--border);
+  background:#e9e5dd;
 }
 
 .tab {
-  flex: 1;
-  min-width: 75px;
-  border: 0;
-  border-right: 2px solid var(--ink);
-  box-shadow: none;
-  background: #e9e5dd;
-  padding: 13px 8px;
+  flex:1;
+  min-width:0;
+  border:0;
+  border-right:2px solid var(--ink);
+  box-shadow:none;
+  padding:13px 5px;
+  background:#e9e5dd;
 }
 
+.tab:last-child { border-right:0; }
+
 .tab.active {
-  background: var(--paper);
-  box-shadow: inset 0 -4px var(--ink);
+  background:var(--paper);
+  box-shadow:inset 0 -4px var(--ink);
 }
 
 .editor-host {
-  display: none;
-  height: 430px;
-  background: #1e1e1e;
+  display:none;
+  height:430px;
+  background:#1e1e1e;
 }
 
-.editor-host.active { display: block; }
+.editor-host.active { display:block; }
 
 .cm-editor {
-  height: 100%;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
+  height:100%;
+  font-family:"JetBrains Mono",monospace;
+  font-size:13px;
 }
 
 .cm-editor .cm-scroller {
-  overflow: auto;
-  font-family: "JetBrains Mono", monospace;
-  line-height: 1.65;
+  overflow:auto;
+  font-family:"JetBrains Mono",monospace;
+  line-height:1.65;
 }
 
-.cm-editor.cm-focused { outline: none; }
+.cm-editor.cm-focused { outline:none; }
 
 .editor-footer {
-  padding: 9px 12px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  background: #eee9df;
-  border-top: var(--border);
-  font-size: 11px;
-  font-weight: 600;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:7px;
+  padding:9px 12px;
+  background:#eee9df;
+  border-top:var(--border);
+  font-size:11px;
+  font-weight:600;
 }
 
 .tools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  padding: 12px;
-  border-top: var(--border);
+  padding:12px;
+  border-top:var(--border);
 }
 
 .preview-wrap {
-  padding: 10px;
-  background: #d9d5cd;
+  padding:10px;
+  background:#d9d5cd;
 }
 
 .preview {
-  display: block;
-  width: 100%;
-  height: 430px;
-  border: 2px solid var(--ink);
-  background: white;
+  display:block;
+  width:100%;
+  height:430px;
+  border:2px solid var(--ink);
+  background:white;
 }
 
-.console {
-  border-top: var(--border);
-}
+.console { border-top:var(--border); }
 
 .console-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: var(--yellow);
-  font-weight: 700;
+  display:flex;
+  justify-content:space-between;
+  padding:10px 12px;
+  background:var(--yellow);
+  font-weight:700;
 }
 
 .console-body {
-  height: 125px;
-  overflow: auto;
-  padding: 10px;
-  background: #171717;
-  color: #d6f5d6;
-  font: 12px/1.6 "JetBrains Mono", monospace;
-  overflow-wrap: anywhere;
+  height:125px;
+  overflow:auto;
+  padding:10px;
+  background:#171717;
+  color:#d6f5d6;
+  font:12px/1.6 "JetBrains Mono",monospace;
+  overflow-wrap:anywhere;
 }
 
 .log {
-  white-space: pre-wrap;
-  border-bottom: 1px solid #333;
-  padding: 3px 0;
+  white-space:pre-wrap;
+  border-bottom:1px solid #333;
+  padding:3px 0;
 }
 
-.log.error { color: #ff9999; }
-.log.warn { color: #ffe66d; }
+.log.error { color:#ff9999; }
+.log.warn { color:#ffe66d; }
 
 .status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
-  display: inline-block;
-  border-radius: 50%;
-  background: #26a65b;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#26a65b;
 }
 
 .info {
-  margin-top: 20px;
-  padding: 13px;
-  border: var(--border);
-  background: var(--pink);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.6;
+  margin-top:20px;
+  padding:13px;
+  border:var(--border);
+  background:var(--pink);
+  font-size:12px;
+  font-weight:600;
+  line-height:1.6;
 }
 
-.hidden { display: none !important; }
-
-@media (max-width: 850px) {
-  .workspace { grid-template-columns: 1fr; }
-  .editor-host { height: 380px; }
-  .preview { height: 390px; }
-  .app { padding: 13px; }
-  .topbar { padding: 14px; }
+/* Custom fullscreen overlay: avoids relying on browser fullscreen API */
+#fullscreenOverlay {
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:none;
+  flex-direction:column;
+  background:#fffdf8;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
 }
 
-@media (max-width: 430px) {
-  .brand { font-size: 20px; }
-  button { padding: 9px 10px; font-size: 12px; }
-  .editor-host { height: 340px; }
-  .preview { height: 350px; }
+#fullscreenOverlay.open { display:flex; }
+
+.fullscreen-bar {
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px;
+  background:var(--yellow);
+  border-bottom:var(--border);
+}
+
+.fullscreen-title {
+  font-size:14px;
+  font-weight:700;
+}
+
+#fullscreenFrame {
+  display:block;
+  flex:1;
+  width:100%;
+  min-height:0;
+  border:0;
+  background:white;
+}
+
+body.overlay-open { overflow:hidden; }
+
+@media(max-width:850px) {
+  .workspace { grid-template-columns:1fr; }
+  .editor-host { height:380px; }
+  .preview { height:390px; }
+  .app { padding:13px; }
+}
+
+@media(max-width:430px) {
+  .topbar { padding:13px; }
+  .brand { font-size:20px; }
+  button { padding:9px 10px; font-size:12px; }
+  .editor-host { height:340px; }
+  .preview { height:350px; }
+  .fullscreen-bar button { padding:9px 12px; }
 }
 </style>
 </head>
@@ -308,8 +336,7 @@ button:disabled {
     <div class="brand">MINI<span>CODE</span> STUDIO</div>
     <div class="subtitle">Your pocket-sized coding playground.</div>
   </div>
-
-  <div class="top-actions">
+  <div class="actions">
     <button id="runBtn" class="primary">▶ Run</button>
     <button id="downloadBtn" class="blue">↓ Export HTML</button>
   </div>
@@ -318,17 +345,17 @@ button:disabled {
 <main class="app">
   <div class="section-head">
     <h1>Build something.</h1>
-    <span class="tag">NEO BRUTALISM / V1.0</span>
+    <span class="tag">NEO BRUTALISM / V1.1</span>
   </div>
 
   <div class="workspace">
     <section class="panel">
       <div class="panel-title">
         <span>⌘ CODE EDITOR</span>
-        <span class="tag" id="lineInfo">Ready</span>
+        <span class="tag" id="lineInfo">0 lines</span>
       </div>
 
-      <div class="editor-tabs">
+      <div class="tabs">
         <button class="tab active" data-tab="html">HTML</button>
         <button class="tab" data-tab="css">CSS</button>
         <button class="tab" data-tab="js">JS</button>
@@ -346,24 +373,23 @@ button:disabled {
       <div class="tools">
         <button id="autoBtn" class="primary">⚡ Auto Preview: ON</button>
         <button id="copyBtn">▣ Copy All</button>
-        <button id="resetBtn" class="pink">↺ Reset</button>
+        <button id="resetBtn" class="pink">⌫ Clear All</button>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-title">
         <span>◫ LIVE PREVIEW</span>
-        <span class="status"><i class="dot"></i><span id="previewStatus">Ready</span></span>
+        <span class="status">
+          <i class="dot"></i><span id="previewStatus">Ready</span>
+        </span>
       </div>
 
       <div class="preview-wrap">
-        <iframe
-          id="preview"
-          class="preview"
-          title="Live HTML preview"
+        <iframe id="preview" class="preview"
+          title="Live preview"
           sandbox="allow-scripts allow-forms allow-modals"
-          referrerpolicy="no-referrer">
-        </iframe>
+          referrerpolicy="no-referrer"></iframe>
       </div>
 
       <div class="tools">
@@ -377,93 +403,42 @@ button:disabled {
           <span>⌁ CONSOLE</span>
           <span id="consoleCount">0 logs</span>
         </div>
-        <div id="consoleBody" class="console-body">
-          <div class="log">Mini Code Studio ready.</div>
-        </div>
+        <div id="consoleBody" class="console-body"></div>
       </div>
     </section>
   </div>
 
   <div class="info">
-    💡 TIPS: Gunakan tab HTML, CSS, dan JS untuk mengedit bagian berbeda.
-    Preview otomatis menunggu 700 ms setelah kamu berhenti mengetik.
-    Koneksi internet diperlukan untuk memuat editor CodeMirror 6.
+    💡 Editor dimulai kosong. Kode tidak disimpan otomatis, jadi refresh halaman
+    akan mengosongkan editor. Gunakan Export HTML untuk menyimpan hasil project.
   </div>
 </main>
 
+<div id="fullscreenOverlay" aria-hidden="true">
+  <div class="fullscreen-bar">
+    <span class="fullscreen-title">◫ LIVE PREVIEW</span>
+    <button id="closeFullscreen" class="pink">✕ Close</button>
+  </div>
+  <iframe id="fullscreenFrame" title="Fullscreen preview"
+    sandbox="allow-scripts allow-forms allow-modals"
+    referrerpolicy="no-referrer"></iframe>
+</div>
+
 <script type="module">
 import { basicSetup } from "https://esm.sh/codemirror@6.0.2";
-import { EditorView, keymap } from "https://esm.sh/@codemirror/view@6.36.5";
+import { EditorView } from "https://esm.sh/@codemirror/view@6.36.5";
 import { html } from "https://esm.sh/@codemirror/lang-html@6.4.9";
 import { css } from "https://esm.sh/@codemirror/lang-css@6.3.1";
 import { javascript } from "https://esm.sh/@codemirror/lang-javascript@6.2.2";
 import { oneDark } from "https://esm.sh/@codemirror/theme-one-dark@6.1.2";
 
-const $ = (selector) => document.querySelector(selector);
+const $ = selector => document.querySelector(selector);
 
-const defaults = {
-  html: `<main class="card">
-  <div class="badge">✦ MINI PROJECT</div>
-  <h1>Hello, world!</h1>
-  <p>Selamat datang di Mini Code Studio.</p>
-  <button id="helloBtn">Click me ↗</button>
-  <p id="message"></p>
-</main>`,
-  css: `* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background: #f5f0e8;
-  color: #171717;
-  font-family: Arial, sans-serif;
-}
-
-.card {
-  width: min(100%, 360px);
-  padding: 28px;
-  border: 3px solid #171717;
-  box-shadow: 7px 7px 0 #171717;
-  background: white;
-}
-
-.badge {
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-h1 {
-  font-size: 36px;
-  margin-bottom: 8px;
-}
-
-p { line-height: 1.6; }
-
-button {
-  padding: 12px 18px;
-  background: #ffe66d;
-  border: 2px solid #171717;
-  box-shadow: 3px 3px 0 #171717;
-  font-weight: bold;
-  cursor: pointer;
-}`,
-  js: `const button = document.querySelector("#helloBtn");
-const message = document.querySelector("#message");
-
-button.addEventListener("click", () => {
-  message.textContent = "Nice! Tombol berhasil diklik ✨";
-  console.log("Button clicked!");
-});`
-};
-
-const sources = { ...defaults };
+/* All three editors intentionally start EMPTY.
+   No starter template and no localStorage restoration. */
 const views = {};
+const emptySources = { html:"", css:"", js:"" };
+
 let activeTab = "html";
 let autoPreview = true;
 let previewTimer = null;
@@ -473,43 +448,37 @@ const PREVIEW_DELAY = 700;
 
 const darkTheme = EditorView.theme({
   "&": {
-    height: "100%",
-    color: "#e5e7eb",
-    backgroundColor: "#1e1e1e"
+    height:"100%",
+    color:"#e5e7eb",
+    backgroundColor:"#1e1e1e"
   },
   ".cm-content": {
-    caretColor: "#ffe66d",
-    fontFamily: '"JetBrains Mono", monospace'
+    caretColor:"#ffe66d",
+    fontFamily:'"JetBrains Mono",monospace'
   },
   ".cm-gutters": {
-    backgroundColor: "#1e1e1e",
-    color: "#777",
-    border: "none"
+    backgroundColor:"#1e1e1e",
+    color:"#777",
+    border:"none"
   },
-  ".cm-activeLine": { backgroundColor: "#ffffff0a" },
-  ".cm-activeLineGutter": { backgroundColor: "#ffffff0a" },
-  "&.cm-focused .cm-cursor": { borderLeftColor: "#ffe66d" },
-  "&.cm-focused .cm-selectionBackground, ::selection": {
-    backgroundColor: "#345b91 !important"
-  }
-}, { dark: true });
+  ".cm-activeLine": { backgroundColor:"#ffffff0a" },
+  ".cm-activeLineGutter": { backgroundColor:"#ffffff0a" },
+  "&.cm-focused .cm-cursor": { borderLeftColor:"#ffe66d" }
+}, {dark:true});
 
-function languageFor(tab) {
-  if (tab === "html") return html();
-  if (tab === "css") return css();
-  return javascript();
-}
-
-function countLines(text) {
-  return text.split("\n").length;
+function getSource() {
+  return {
+    html:views.html.state.doc.toString(),
+    css:views.css.state.doc.toString(),
+    js:views.js.state.doc.toString()
+  };
 }
 
 function updateEditorInfo() {
   const text = views[activeTab].state.doc.toString();
-  $("#charInfo").textContent = `${text.length.toLocaleString()} characters`;
-  $("#lineInfo").textContent = `${countLines(text)} lines`;
-  $("#activeLanguage").textContent =
-    `${activeTab.toUpperCase()} • CodeMirror 6`;
+  $("#charInfo").textContent = `${text.length} characters`;
+  $("#lineInfo").textContent = `${text.length ? text.split("\n").length : 0} lines`;
+  $("#activeLanguage").textContent = `${activeTab.toUpperCase()} • CodeMirror 6`;
 }
 
 function addLog(type, args) {
@@ -519,13 +488,13 @@ function addLog(type, args) {
     catch { return String(value); }
   }).join(" ");
 
-  consoleLogs.push({ type, message });
+  consoleLogs.push({type,message});
   if (consoleLogs.length > MAX_LOGS) consoleLogs.shift();
   renderConsole();
 }
 
 function renderConsole() {
-  const container = $("#consoleBody");
+  const body = $("#consoleBody");
   const fragment = document.createDocumentFragment();
 
   for (const entry of consoleLogs) {
@@ -537,8 +506,8 @@ function renderConsole() {
     fragment.appendChild(line);
   }
 
-  container.replaceChildren(fragment);
-  container.scrollTop = container.scrollHeight;
+  body.replaceChildren(fragment);
+  body.scrollTop = body.scrollHeight;
   $("#consoleCount").textContent = `${consoleLogs.length} logs`;
 }
 
@@ -547,63 +516,57 @@ function clearConsole() {
   renderConsole();
 }
 
-function getSource() {
-  return {
-    html: views.html.state.doc.toString(),
-    css: views.css.state.doc.toString(),
-    js: views.js.state.doc.toString()
-  };
-}
-
+/* A separate preview bootstrap captures console messages. */
 function buildDocument() {
   const source = getSource();
 
-  // JSON.stringify protects source text when it is inserted into
-  // the preview bootstrap script.
   const bootstrap = `
-    (() => {
-      const send = (type, args) => {
-        try {
-          parent.postMessage({
-            channel: "MINICODE_STUDIO",
-            type,
-            args: Array.from(args).map(value => {
-              if (typeof value === "string") return value;
-              try { return JSON.parse(JSON.stringify(value)); }
-              catch { return String(value); }
-            })
-          }, "*");
-        } catch {}
-      };
+(() => {
+  const send = (type, args) => {
+    try {
+      parent.postMessage({
+        channel: "MINICODE_STUDIO",
+        type,
+        args: Array.from(args).map(value => {
+          if (typeof value === "string") return value;
+          try { return JSON.parse(JSON.stringify(value)); }
+          catch { return String(value); }
+        })
+      }, "*");
+    } catch {}
+  };
 
-      ["log", "warn", "error", "info"].forEach(type => {
-        const original = console[type].bind(console);
-        console[type] = (...args) => {
-          send(type, args);
-          original(...args);
-        };
-      });
+  ["log","warn","error","info"].forEach(type => {
+    const original = console[type].bind(console);
+    console[type] = (...args) => {
+      send(type,args);
+      original(...args);
+    };
+  });
 
-      addEventListener("error", event => {
-        send("error", [event.message || "Unknown error"]);
-      });
+  addEventListener("error", event => {
+    send("error",[event.message || "Unknown error"]);
+  });
 
-      addEventListener("unhandledrejection", event => {
-        send("error", ["Unhandled promise rejection", event.reason]);
-      });
-    })();
-  `;
+  addEventListener("unhandledrejection", event => {
+    send("error",["Unhandled promise rejection",event.reason]);
+  });
+})();
+`;
 
-  return "<!DOCTYPE html>\n" +
-    "<html lang=\"en\"><head>" +
-    '<meta charset="UTF-8">' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    "<style>\n" + source.css + "\n</style>" +
-    "</head><body>\n" +
-    source.html +
-    "\n<script>\n" + bootstrap + "\n<\/script>\n" +
-    "<script>\n" + source.js + "\n<\/script>\n" +
-    "</body></html>";
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>${source.css}</style>
+</head>
+<body>
+${source.html}
+<script>${bootstrap}<\/script>
+<script>${source.js}<\/script>
+</body>
+</html>`;
 }
 
 function runPreview() {
@@ -612,6 +575,11 @@ function runPreview() {
 
   const documentText = buildDocument();
   $("#preview").srcdoc = documentText;
+
+  // Keep fullscreen preview in sync when it is open.
+  if ($("#fullscreenOverlay").classList.contains("open")) {
+    $("#fullscreenFrame").srcdoc = documentText;
+  }
 
   $("#preview").onload = () => {
     $("#previewStatus").textContent = "Updated";
@@ -625,31 +593,16 @@ function schedulePreview() {
   previewTimer = setTimeout(runPreview, PREVIEW_DELAY);
 }
 
-function switchTab(tab) {
-  activeTab = tab;
-
-  document.querySelectorAll(".tab").forEach(button => {
-    button.classList.toggle("active", button.dataset.tab === tab);
-  });
-
-  document.querySelectorAll(".editor-host").forEach(host => {
-    host.classList.toggle("active", host.id === `editor-${tab}`);
-  });
-
-  // Refresh layout after showing the existing editor instance.
-  requestAnimationFrame(() => {
-    views[tab].requestMeasure();
-    views[tab].focus();
-    updateEditorInfo();
-  });
+function languageFor(tab) {
+  if (tab === "html") return html();
+  if (tab === "css") return css();
+  return javascript();
 }
 
 function createEditor(tab) {
-  const host = $(`#editor-${tab}`);
-
   views[tab] = new EditorView({
-    doc: sources[tab],
-    parent: host,
+    doc: emptySources[tab],
+    parent: $(`#editor-${tab}`),
     extensions: [
       basicSetup,
       oneDark,
@@ -658,7 +611,6 @@ function createEditor(tab) {
       EditorView.lineWrapping,
       EditorView.updateListener.of(update => {
         if (!update.docChanged) return;
-        sources[tab] = update.state.doc.toString();
         if (tab === activeTab) updateEditorInfo();
         schedulePreview();
       })
@@ -666,10 +618,27 @@ function createEditor(tab) {
   });
 }
 
+function switchTab(tab) {
+  activeTab = tab;
+
+  document.querySelectorAll(".tab").forEach(button => {
+    button.classList.toggle("active",button.dataset.tab === tab);
+  });
+
+  document.querySelectorAll(".editor-host").forEach(host => {
+    host.classList.toggle("active",host.id === `editor-${tab}`);
+  });
+
+  requestAnimationFrame(() => {
+    views[tab].requestMeasure();
+    updateEditorInfo();
+  });
+}
+
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    addLog("info", ["Copied to clipboard."]);
+    addLog("info",["Copied to clipboard."]);
   } catch {
     const area = document.createElement("textarea");
     area.value = text;
@@ -677,95 +646,105 @@ async function copyText(text) {
     area.select();
     const ok = document.execCommand("copy");
     area.remove();
-    addLog(ok ? "info" : "error", [
-      ok ? "Copied to clipboard." : "Copy failed. Try selecting the text."
+    addLog(ok ? "info" : "error",[
+      ok ? "Copied to clipboard." : "Copy failed."
     ]);
   }
 }
 
 function downloadHTML() {
-  const blob = new Blob([buildDocument()], { type: "text/html;charset=utf-8" });
+  const blob = new Blob([buildDocument()], {
+    type:"text/html;charset=utf-8"
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
   link.download = "mini-code-project.html";
   link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+
+/* Custom fullscreen overlay: no browser fullscreen prompt.
+   The preview fills the app viewport and has an explicit Close button. */
+function openFullscreen() {
+  const overlay = $("#fullscreenOverlay");
+  $("#fullscreenFrame").srcdoc = buildDocument();
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+  document.body.classList.add("overlay-open");
+}
+
+function closeFullscreen() {
+  const overlay = $("#fullscreenOverlay");
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  document.body.classList.remove("overlay-open");
 }
 
 document.querySelectorAll(".tab").forEach(button => {
-  button.addEventListener("click", () => switchTab(button.dataset.tab));
+  button.addEventListener("click",() => switchTab(button.dataset.tab));
 });
 
-$("#runBtn").addEventListener("click", runPreview);
-$("#refreshBtn").addEventListener("click", runPreview);
-$("#downloadBtn").addEventListener("click", downloadHTML);
+$("#runBtn").addEventListener("click",runPreview);
+$("#refreshBtn").addEventListener("click",runPreview);
+$("#downloadBtn").addEventListener("click",downloadHTML);
+$("#fullscreenBtn").addEventListener("click",openFullscreen);
+$("#closeFullscreen").addEventListener("click",closeFullscreen);
 
-$("#autoBtn").addEventListener("click", () => {
+$("#autoBtn").addEventListener("click",() => {
   autoPreview = !autoPreview;
   $("#autoBtn").textContent =
     `⚡ Auto Preview: ${autoPreview ? "ON" : "OFF"}`;
-  $("#autoBtn").classList.toggle("primary", autoPreview);
+  $("#autoBtn").classList.toggle("primary",autoPreview);
   if (autoPreview) runPreview();
   else clearTimeout(previewTimer);
 });
 
-$("#copyBtn").addEventListener("click", () => {
+$("#copyBtn").addEventListener("click",() => {
   const source = getSource();
-  const all = [
-    "<!-- HTML -->",
-    source.html,
-    "\n/* CSS */\n",
-    source.css,
-    "\n// JavaScript\n",
-    source.js
-  ].join("\n");
-  copyText(all);
+  copyText(
+    "<!-- HTML -->\n" + source.html +
+    "\n/* CSS */\n" + source.css +
+    "\n// JavaScript\n" + source.js
+  );
 });
 
-$("#resetBtn").addEventListener("click", () => {
-  if (!confirm("Reset semua kode ke contoh awal?")) return;
+$("#resetBtn").addEventListener("click",() => {
+  if (!confirm("Kosongkan semua kode?")) return;
 
-  for (const tab of ["html", "css", "js"]) {
+  for (const tab of ["html","css","js"]) {
     views[tab].dispatch({
-      changes: {
-        from: 0,
-        to: views[tab].state.doc.length,
-        insert: defaults[tab]
+      changes:{
+        from:0,
+        to:views[tab].state.doc.length,
+        insert:""
       }
     });
   }
 
+  clearConsole();
   runPreview();
+  switchTab("html");
 });
 
-$("#clearConsoleBtn").addEventListener("click", clearConsole);
+$("#clearConsoleBtn").addEventListener("click",clearConsole);
 
-$("#fullscreenBtn").addEventListener("click", async () => {
-  const panel = $("#preview").parentElement;
-  try {
-    if (!document.fullscreenElement) {
-      await panel.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  } catch {
-    addLog("warn", ["Fullscreen is not supported in this browser."]);
-  }
-});
+window.addEventListener("message",event => {
+  if (event.source !== $("#preview").contentWindow &&
+      event.source !== $("#fullscreenFrame").contentWindow) return;
 
-window.addEventListener("message", event => {
-  if (event.source !== $("#preview").contentWindow) return;
   if (!event.data || event.data.channel !== "MINICODE_STUDIO") return;
-
-  addLog(event.data.type || "log", event.data.args || []);
+  addLog(event.data.type || "log",event.data.args || []);
 });
 
-for (const tab of ["html", "css", "js"]) {
-  createEditor(tab);
-}
+document.addEventListener("keydown",event => {
+  if (event.key === "Escape") closeFullscreen();
+});
+
+for (const tab of ["html","css","js"]) createEditor(tab);
 
 switchTab("html");
+clearConsole();
 runPreview();
 </script>
 </body>
