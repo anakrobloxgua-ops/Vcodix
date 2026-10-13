@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d18">
+<title>Mobile Code Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#090d18;--panel:#101827;--panel2:#0b1220;--line:#253149;--muted:#91a0b9;--text:#e7eefb;--blue:#60a5fa;--cyan:#67e8f9;--purple:#c4b5fd;--green:#86efac;--red:#fca5a5;--yellow:#fde68a}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}body{overflow:hidden}
+button,select{font:inherit}button{cursor:pointer;color:var(--text);border:1px solid var(--line);background:#172236;border-radius:10px;padding:9px 12px;transition:background .15s,border-color .15s}button:hover{background:#21314b;border-color:#3b5278}button:active{transform:translateY(1px)}button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.app{height:100dvh;display:flex;flex-direction:column;max-width:1800px;margin:auto}.topbar{min-height:58px;display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);background:#0c1321;flex-shrink:0}.brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.2px;white-space:nowrap}.logo{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#2563eb,#7c3aed);font-size:17px}.brand small{display:block;color:var(--muted);font-weight:500;font-size:10px;letter-spacing:1.5px;margin-top:1px}.top-actions{display:flex;gap:7px;margin-left:auto}.btn-primary{background:#2563eb;border-color:#3b82f6}.btn-primary:hover{background:#1d4ed8}.iconbtn{padding:8px 10px}.workspace{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.86fr);gap:12px;padding:12px}.editor-panel,.preview-panel{border:1px solid var(--line);border-radius:16px;background:var(--panel);min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column}.panel-head{height:47px;display:flex;align-items:center;padding:0 12px;gap:8px;border-bottom:1px solid var(--line);flex-shrink:0}.panel-title{font-weight:750;font-size:13px}.status{margin-left:auto;display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}.dot{width:7px;height:7px;background:#4ade80;border-radius:50%;box-shadow:0 0 9px #4ade8080}.tabs{display:flex;gap:4px;padding:8px 9px 0;background:var(--panel2);border-bottom:1px solid var(--line);flex-shrink:0}.tab{border:0;border-radius:9px 9px 0 0;background:transparent;color:var(--muted);padding:9px 12px;font-size:12px;font-weight:750}.tab.active{color:var(--text);background:#172236;border:1px solid var(--line);border-bottom-color:#172236}.lang-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}.html-dot{background:#fb923c}.css-dot{background:#60a5fa}.js-dot{background:#fde047}.editor-tools{display:flex;align-items:center;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line);background:#111a2a;flex-shrink:0}.editor-tools span{font-size:11px;color:var(--muted)}.editor-tools button{padding:6px 9px;font-size:11px}.editor-wrap{position:relative;flex:1;min-height:0;display:flex;background:#0a1020;overflow:hidden}.gutter{width:42px;flex-shrink:0;padding:14px 8px 14px 0;text-align:right;color:#52617a;font:12px/21px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre;overflow:hidden;user-select:none;border-right:1px solid #1c2940}.code-stack{position:relative;flex:1;min-width:0;min-height:0;overflow:hidden}.highlight,.code-input{position:absolute;inset:0;margin:0;border:0;padding:14px 14px 40px;width:100%;height:100%;overflow:auto;white-space:pre;tab-size:2;font:12px/21px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;word-spacing:0}.highlight{pointer-events:none;color:#dbeafe;scrollbar-width:none}.highlight::-webkit-scrollbar{display:none}.code-input{resize:none;background:transparent;color:transparent;caret-color:#fff;-webkit-text-fill-color:transparent;outline:none;z-index:2;white-space:pre;overflow:auto}.code-input::selection{background:#37527d80;color:transparent}.token-tag{color:#fda4af}.token-attr{color:#fcd34d}.token-string{color:#86efac}.token-comment{color:#718096;font-style:italic}.token-keyword{color:#c4b5fd}.token-number{color:#fdba74}.token-function{color:#67e8f9}.token-property{color:#93c5fd}.token-operator{color:#f9a8d4}.token-punc{color:#9ca3af}.editor-foot{display:flex;gap:10px;align-items:center;padding:7px 11px;border-top:1px solid var(--line);color:var(--muted);font-size:10px;flex-shrink:0}.editor-foot .spacer{flex:1}.suggestions{position:absolute;z-index:8;display:none;min-width:190px;max-width:calc(100% - 18px);max-height:190px;overflow:auto;background:#172236;border:1px solid #3a4d6b;border-radius:10px;box-shadow:0 14px 35px #0008;padding:5px}.suggestions.show{display:block}.suggestion{width:100%;text-align:left;background:transparent;border:0;display:block;padding:8px;border-radius:7px}.suggestion b{color:var(--cyan);font:700 12px ui-monospace,monospace}.suggestion small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.suggestion:hover{background:#263650}.preview-panel{background:#0c1321}.preview-head-actions{display:flex;gap:6px;margin-left:auto}.preview-head-actions button{font-size:11px;padding:6px 9px}.preview-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(ellipse at 50% 30%,#1b2c49 0%,#0b1220 65%);overflow:auto}.phone{width:min(100%,360px);height:min(700px,100%);min-height:390px;max-height:100%;border:7px solid #293448;border-radius:35px;background:#fff;box-shadow:0 20px 65px #0008,0 0 0 1px #62718b;overflow:hidden;display:flex;flex-direction:column;position:relative}.phone-top{height:24px;flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}.notch{height:11px;width:76px;background:#111827;border-radius:0 0 10px 10px;position:absolute;top:0}.phone-screen{border:0;width:100%;height:100%;flex:1;background:white}.phone-bottom{height:17px;background:#fff;display:grid;place-items:center;flex-shrink:0}.homebar{height:4px;width:88px;background:#111827;border-radius:99px}.preview-foot{height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:var(--muted);font-size:10px;border-top:1px solid var(--line);flex-shrink:0}.console{max-height:110px;overflow:auto;background:#080d17;border-top:1px solid var(--line);font:11px/1.5 ui-monospace,monospace;padding:7px 10px;display:none}.console.show{display:block}.log-error{color:#fca5a5}.log-ok{color:#86efac}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#e2e8f0;color:#0f172a;border-radius:11px;padding:10px 14px;font-size:12px;font-weight:750;box-shadow:0 8px 30px #0006;transition:.2s;z-index:20;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.mobile-switch{display:none}
+@media(max-width:760px){.topbar{min-height:54px;padding:8px 9px}.brand{font-size:13px}.logo{width:31px;height:31px}.brand small{font-size:9px}.top-actions{gap:5px}.top-actions button{padding:8px 9px;font-size:11px}.workspace{display:block;padding:8px;position:relative}.editor-panel,.preview-panel{height:100%;border-radius:13px}.preview-panel{display:none}.workspace.show-preview .editor-panel{display:none}.workspace.show-preview .preview-panel{display:flex}.mobile-switch{display:flex;gap:5px;padding:0 8px 8px;flex-shrink:0}.mobile-switch button{flex:1;font-size:12px;padding:9px}.mobile-switch button.active{background:#1d4ed8;border-color:#3b82f6}.panel-head{height:42px}.editor-tools{padding:6px 8px}.highlight,.code-input{font-size:12px;padding-left:10px;padding-right:10px}.gutter{width:34px;font-size:11px}.phone{height:min(680px,100%);width:min(100%,360px);min-height:330px}.preview-stage{padding:10px}.preview-head-actions .desktop-only{display:none}.editor-foot{font-size:9px}.hide-mobile{display:none!important}}
+@media(min-width:761px){.mobile-switch{display:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">&lt;/&gt;</div><div>Mobile Code Studio<small>CODE · PREVIEW · CREATE</small></div></div>
+    <div class="top-actions">
+      <button id="copyBtn" title="Salin kode aktif">⧉ Salin</button>
+      <button id="resetBtn" title="Kembalikan contoh">↺ Reset</button>
+      <button id="downloadBtn" class="btn-primary" title="Unduh HTML">↓ HTML</button>
+    </div>
+  </header>
+  <nav class="mobile-switch" aria-label="Tampilan">
+    <button id="showEditor" class="active">⌨ Editor</button><button id="showPreview">▣ Live Preview</button>
+  </nav>
+  <main class="workspace" id="workspace">
+    <section class="editor-panel">
+      <div class="panel-head"><div class="panel-title">⌘ Code Editor</div><div class="status"><span class="dot"></span><span id="liveStatus">Live</span></div></div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-lang="html" role="tab"><span class="lang-dot html-dot"></span>HTML</button>
+        <button class="tab" data-lang="css" role="tab"><span class="lang-dot css-dot"></span>CSS</button>
+        <button class="tab" data-lang="js" role="tab"><span class="lang-dot js-dot"></span>JS</button>
+      </div>
+      <div class="editor-tools"><span id="langLabel">HTML · index.html</span><div style="flex:1"></div><button id="formatBtn" title="Rapikan indentasi">⌁ Format</button><button id="clearBtn">Hapus</button></div>
+      <div class="editor-wrap" id="editorWrap">
+        <div class="gutter" id="gutter">1</div>
+        <div class="code-stack">
+          <pre class="highlight" id="highlight" aria-hidden="true"></pre>
+          <textarea class="code-input" id="codeInput" aria-label="Editor kode" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off"></textarea>
+          <div class="suggestions" id="suggestions" role="listbox"></div>
+        </div>
+      </div>
+      <div class="editor-foot"><span id="cursorPos">Ln 1, Col 1</span><span class="spacer"></span><span id="charCount">0 chars</span><span>UTF-8</span></div>
+    </section>
+    <section class="preview-panel">
+      <div class="panel-head"><div class="panel-title">▣ Live Preview</div><div class="preview-head-actions"><button id="reloadBtn">↻ Refresh</button><button id="fullBtn" class="desktop-only">⛶ Fullscreen</button><button id="consoleBtn">⚠ Console</button></div></div>
+      <div class="preview-stage" id="previewStage">
+        <div class="phone" id="phone">
+          <div class="phone-top"><div class="notch"></div></div>
+          <iframe class="phone-screen" id="preview" title="Live website preview" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-downloads"></iframe>
+          <div class="phone-bottom"><div class="homebar"></div></div>
+        </div>
+      </div>
+      <div class="console" id="consoleBox"><div class="log-ok">Preview siap. Error JavaScript akan tampil di sini.</div></div>
+      <div class="preview-foot"><span>● Auto preview</span><span id="previewSize">Mobile · 360px</span><span>Sandboxed</span></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const els = {input:$('codeInput'),highlight:$('highlight'),gutter:$('gutter'),suggestions:$('suggestions'),workspace:$('workspace'),preview:$('preview'),console:$('consoleBox')};
+const defaults = {
+html: `<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halo, dunia!</title>
+</head>
+<body>
+  <main class="card">
+    <div class="emoji">⚡</div>
+    <h1>Halo, bre!</h1>
+    <p>Ini website pertamamu di Mobile Code Studio.</p>
+    <button id="helloBtn">Pencet aku ✨</button>
+    <p id="result" aria-live="polite"></p>
+  </main>
+</body>
+</html>`,
+css: `* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+  color: #172033;
+  background: linear-gradient(135deg, #dbeafe, #f5d0fe);
+}
+.card {
+  width: min(100%, 340px);
+  padding: 28px;
+  border-radius: 24px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 20px 50px #33415522;
+}
+.emoji { font-size: 42px; }
+h1 { margin: 12px 0; }
+p { color: #64748b; line-height: 1.6; }
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: white;
+  background: #6d28d9;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:active { transform: scale(.97); }
+#result { color: #6d28d9; font-weight: 700; }`,
+js: `const button = document.querySelector("#helloBtn");
+const result = document.querySelector("#result");
+
+button.addEventListener("click", () => {
+  result.textContent = "Mantap! JavaScript lu berjalan 🎉";
+});`
+};
+let code = {...defaults}, active = 'html', timer = 0, toastTimer = 0, lastError = '';
+const snippetList = [
+  {key:'for',title:'for loop',desc:'Loop dengan counter',insert:'for (let i = 0; i < 10; i++) {\n  \n}' , cursor:34},
+  {key:'fore',title:'for...of',desc:'Loop setiap item array',insert:'for (const item of items) {\n  \n}'},
+  {key:'fn',title:'function',desc:'Deklarasi fungsi',insert:'function namaFungsi() {\n  \n}'},
+  {key:'af',title:'arrow function',desc:'Fungsi panah',insert:'const namaFungsi = () => {\n  \n};'},
+  {key:'log',title:'console.log',desc:'Tampilkan nilai di console',insert:'console.log();',cursor:13},
+  {key:'if',title:'if statement',desc:'Kondisi if',insert:'if (condition) {\n  \n}'},
+  {key:'cl',title:'class CSS',desc:'Selector class',insert:'.nama-class {\n  \n}'},
+  {key:'media',title:'@media',desc:'CSS responsive',insert:'@media (max-width: 600px) {\n  \n}'},
+  {key:'div',title:'div',desc:'Elemen HTML',insert:'<div></div>',cursor:5},
+  {key:'btn',title:'button',desc:'Tombol HTML',insert:'<button type="button">Klik aku</button>'},
+  {key:'html5',title:'HTML boilerplate',desc:'Struktur HTML lengkap',insert:'<!doctype html>\n<html lang="id">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>Halaman baru</title>\n</head>\n<body>\n  \n</body>\n</html>'}
+];
+function escapeHTML(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function highlightCode(src, lang){
+  // Tokenize in one pass. This is visual highlighting, not a full parser.
+  const re = lang==='html'
+    ? /(<!--[\s\S]*?-->|<\/?[A-Za-z][\w:-]*|\/?>|[\w:-]+(?=\s*=)|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|&[\w#]+;)/g
+    : lang==='css'
+      ? /(\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[\da-fA-F]{3,8}\b|(?:\b\d+(?:\.\d+)?(?:px|rem|em|vh|vw|%|s|ms|deg)?\b)|@[a-z-]+|\b(?:important|inherit|initial|unset|none|auto|flex|grid|block|inline|absolute|relative|fixed|center|cover|contain)\b|[.#]?[A-Za-z_-][\w-]*(?=\s*[{(:])|[{}:;,])/g
+      : /(\/\/[^\n]*|\/\*[\s\S]*?\*\/|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:const|let|var|function|return|if|else|for|of|in|while|do|switch|case|break|continue|new|class|extends|this|try|catch|finally|throw|async|await|import|from|export|default|typeof|instanceof|true|false|null|undefined|NaN)\b|\b\d+(?:\.\d+)?\b|\b[A-Za-z_$][\w$]*(?=\s*\()|[+\-*\/%=!<>|&?:~^]+|[{}()[\].,;])/g;
+  let out='', last=0, m;
+  while((m=re.exec(src))){
+    out+=escapeHTML(src.slice(last,m.index));
+    const t=m[0]; let cls='';
+    if(lang==='html'){
+      if(t.startsWith('<!--')) cls='token-comment';
+      else if(/^<\/?[A-Za-z]/.test(t)||t==='>'||t==='/>'||t==='<') cls='token-tag';
+      else if(/^["']/.test(t)) cls='token-string';
+      else if(/^[\w:-]+$/.test(t)) cls='token-attr';
+    }else if(lang==='css'){
+      if(t.startsWith('/*')) cls='token-comment';
+      else if(/^["']/.test(t)) cls='token-string';
+      else if(t[0]==='#'||/^\d/.test(t)) cls='token-number';
+      else if(t[0]==='@') cls='token-keyword';
+      else if(/^[{}:;,]$/.test(t)) cls='token-punc';
+      else cls='token-property';
+    }else{
+      if(t.startsWith('//')||t.startsWith('/*')) cls='token-comment';
+      else if(/^["'`]/.test(t)) cls='token-string';
+      else if(/^(const|let|var|function|return|if|else|for|of|in|while|do|switch|case|break|continue|new|class|extends|this|try|catch|finally|throw|async|await|import|from|export|default|typeof|instanceof|true|false|null|undefined|NaN)$/.test(t)) cls='token-keyword';
+      else if(/^\d/.test(t)) cls='token-number';
+      else if(/^[+\-*\/%=!<>|&?:~^]+$/.test(t)) cls='token-operator';
+      else if(/^[{}()[\].,;]$/.test(t)) cls='token-punc';
+      else cls='token-function';
+    }
+    out+=cls?`<span class="${cls}">${escapeHTML(t)}</span>`:escapeHTML(t); last=re.lastIndex;
+  }
+  out+=escapeHTML(src.slice(last));
+  return out+'\n';
+}
+function syncEditor(){
+  const val=code[active]; els.input.value=val; els.highlight.innerHTML=highlightCode(val,active);
+  syncScroll(); updateGutter(); updateMeta(); updateTabs(); hideSuggestions();
+}
+function syncScroll(){els.highlight.scrollTop=els.input.scrollTop;els.highlight.scrollLeft=els.input.scrollLeft;els.gutter.scrollTop=els.input.scrollTop;}
+function updateGutter(){const n=Math.max(1,els.input.value.split('\n').length);els.gutter.textContent=Array.from({length:n},(_,i)=>i+1).join('\n');}
+function updateMeta(){
+  const pos=els.input.selectionStart, before=els.input.value.slice(0,pos).split('\n');
+  $('cursorPos').textContent=`Ln ${before.length}, Col ${before[before.length-1].length+1}`;
+  $('charCount').textContent=`${els.input.value.length} chars`;
+}
+function updateTabs(){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.lang===active));
+  $('langLabel').textContent=active.toUpperCase()+' · '+({html:'index.html',css:'style.css',js:'script.js'}[active]);
+}
+function buildDocument(){
+  let h=code.html;
+  const css=code.css, js=code.js;
+  if(/<\/head\s*>/i.test(h)) h=h.replace(/<\/head\s*>/i,`<style>${css.replace(/<\/style/gi,'<\\/style')}</style>\n</head>`);
+  else h=`<style>${css.replace(/<\/style/gi,'<\\/style')}</style>\n${h}`;
+  const reporter=`<script>
+  (function(){
+    const send=(type,args)=>{try{parent.postMessage({__mcs:true,type,args:Array.from(args||[]).map(x=>{try{return typeof x==='string'?x:JSON.stringify(x)}catch(e){return String(x)}})},'*')}catch(e){}};
+    const oldError=console.error.bind(console);
+    console.error=(...a)=>{send('console-error',a);oldError(...a)};
+    window.addEventListener('error',e=>send('runtime-error',[e.message+' (baris '+(e.lineno||'?')+')']));
+    window.addEventListener('unhandledrejection',e=>send('runtime-error',[String(e.reason)]));
+    const oldWarn=console.warn.bind(console); console.warn=(...a)=>{send('console-warn',a);oldWarn(...a)};
+    console.log=(...a)=>send('console-log',a);
+  })();
+  <\/script>`;
+  const injected=`<script>${js.replace(/<\/script/gi,'<\\/script')}<\/script>`;
+  if(/<\/body\s*>/i.test(h)) h=h.replace(/<\/body\s*>/i,`${reporter}${injected}\n</body>`);
+  else h+=reporter+injected;
+  return h;
+}
+function runPreview(){
+  try{
+    els.preview.srcdoc=buildDocument();
+    $('liveStatus').textContent='Live';
+    $('liveStatus').style.color='var(--green)';
+    lastError='';
+    els.console.innerHTML='<div class="log-ok">Preview diperbarui. Klik elemen di dalam preview untuk mengujinya.</div>';
+  }catch(e){setConsole('runtime-error',[e.message]);}
+}
+function schedulePreview(){clearTimeout(timer);timer=setTimeout(runPreview,100);}
+function setConsole(type,args){
+  const div=document.createElement('div');
+  div.className=type==='runtime-error'||type==='console-error'?'log-error':type==='console-warn'?'':'log-ok';
+  div.textContent=(type==='runtime-error'?'✖ Error: ':type==='console-error'?'✖ console.error: ':type==='console-warn'?'⚠ ':'› ')+args.join(' ');
+  if(type==='runtime-error'||type==='console-error'){lastError=div.textContent;$('liveStatus').textContent='Error';$('liveStatus').style.color='var(--red)';}
+  if(els.console.querySelector('.log-ok')&&els.console.children.length===1)els.console.innerHTML='';
+  els.console.appendChild(div);els.console.scrollTop=els.console.scrollHeight;
+}
+window.addEventListener('message',e=>{if(e.data&&e.data.__mcs)setConsole(e.data.type,e.data.args||[]);});
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1800);}
+function hideSuggestions(){els.suggestions.classList.remove('show');els.suggestions.innerHTML='';}
+function showSuggestions(){
+  const pos=els.input.selectionStart, left=els.input.value.slice(0,pos);
+  const m=left.match(/([A-Za-z][\w-]*)$/);
+  if(!m){hideSuggestions();return;}
+  const typed=m[1].toLowerCase();
+  const items=snippetList.filter(s=>s.key.startsWith(typed)||s.title.toLowerCase().startsWith(typed)).slice(0,6);
+  if(!items.length){hideSuggestions();return;}
+  els.suggestions.innerHTML='';
+  items.forEach(s=>{
+    const b=document.createElement('button');b.className='suggestion';b.type='button';b.innerHTML=`<b>${escapeHTML(s.key)}</b><small>${escapeHTML(s.title)} — ${escapeHTML(s.desc)}</small>`;
+    b.addEventListener('mousedown',e=>e.preventDefault());
+    b.addEventListener('click',()=>insertSnippet(s,m[0].length));els.suggestions.appendChild(b);
+  });
+  const line=left.split('\n').length-1, col=left.length-left.lastIndexOf('\n')-1;
+  const lineHeight=21, top=Math.max(8,Math.min(els.input.clientHeight-150,14+(line*lineHeight)-els.input.scrollTop+lineHeight));
+  const leftPx=Math.max(8,Math.min(els.input.clientWidth-205,14+col*7.2-els.input.scrollLeft));
+  els.suggestions.style.top=top+'px';els.suggestions.style.left=leftPx+'px';els.suggestions.classList.add('show');
+}
+function insertSnippet(s,removeLen){
+  const el=els.input,start=el.selectionStart,end=el.selectionEnd;
+  const text=el.value.slice(0,start-removeLen)+s.insert+el.value.slice(end);
+  code[active]=text;el.value=text;const target=start-removeLen+(s.cursor??s.insert.length);
+  el.focus();el.setSelectionRange(target,target);els.highlight.innerHTML=highlightCode(text,active);updateGutter();updateMeta();hideSuggestions();schedulePreview();
+}
+els.input.addEventListener('input',()=>{
+  code[active]=els.input.value;els.highlight.innerHTML=highlightCode(els.input.value,active);updateGutter();updateMeta();schedulePreview();showSuggestions();
+});
+els.input.addEventListener('scroll',syncScroll);
+els.input.addEventListener('click',updateMeta);els.input.addEventListener('keyup',e=>{updateMeta();if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Escape'].includes(e.key))hideSuggestions();});
+els.input.addEventListener('keydown',e=>{
+  if(e.key==='Tab'){e.preventDefault();const a=els.input.selectionStart,b=els.input.selectionEnd,v=els.input.value;els.input.value=v.slice(0,a)+'  '+v.slice(b);els.input.setSelectionRange(a+2,a+2);code[active]=els.input.value;els.highlight.innerHTML=highlightCode(code[active],active);updateGutter();updateMeta();schedulePreview();}
+  if(e.key==='Enter'&&els.suggestions.classList.contains('show')){const first=els.suggestions.querySelector('button');if(first){e.preventDefault();first.click();}}
+  if(e.key==='Escape')hideSuggestions();
+});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{code[active]=els.input.value;active=b.dataset.lang;syncEditor();}));
+$('copyBtn').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(code[active]);toast('Kode '+active.toUpperCase()+' berhasil disalin!');}
+  catch(e){els.input.focus();els.input.select();try{document.execCommand('copy');toast('Kode disalin!')}catch(_){toast('Pilih kode lalu salin secara manual.')}}
+});
+$('resetBtn').addEventListener('click',()=>{if(confirm('Kembalikan semua kode ke contoh awal?')){code={...defaults};syncEditor();runPreview();toast('Contoh berhasil direset.')}});
+$('clearBtn').addEventListener('click',()=>{if(confirm('Hapus semua kode pada tab '+active.toUpperCase()+'?')){code[active]='';syncEditor();schedulePreview();}});
+$('reloadBtn').addEventListener('click',()=>{runPreview();toast('Preview di-refresh.');});
+$('consoleBtn').addEventListener('click',()=>els.console.classList.toggle('show'));
+$('fullBtn').addEventListener('click',async()=>{const target=$('phone');try{if(!document.fullscreenElement)await target.requestFullscreen();else await document.exitFullscreen();}catch(e){toast('Fullscreen tidak tersedia di browser ini.')}});
+$('downloadBtn').addEventListener('click',()=>{
+  const blob=new Blob([buildDocument()],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='index.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('index.html sedang diunduh.');
+});
+$('formatBtn').addEventListener('click',()=>{
+  const raw=els.input.value;
+  if(active==='js'){
+    // Lightweight indentation formatter; intentionally avoids changing code tokens.
+    const lines=raw.split('\n');let depth=0;
+    code[active]=lines.map(line=>{const t=line.trim();if(!t)return '';if(/^[}\])]/.test(t))depth=Math.max(0,depth-1);const out='  '.repeat(depth)+t;if(/[{\[(]\s*(?:\/\/.*)?$/.test(t)&&!/[}\])]\s*;?$/.test(t))depth++;return out;}).join('\n');
+  }else if(active==='css'){
+    code[active]=raw.replace(/\s*{\s*/g,' {\n  ').replace(/;\s*/g,';\n  ').replace(/\s*}\s*/g,'\n}\n').replace(/\n  \n/g,'\n').trim();
+  }else{
+    code[active]=raw.replace(/>\s*</g,'>\n<').split('\n').map(x=>x.trim()).filter((x,i,a)=>x||i===0).join('\n');
+  }
+  syncEditor();schedulePreview();toast('Format dasar diterapkan.');
+});
+$('showEditor').addEventListener('click',()=>setMobileView(false));
+$('showPreview').addEventListener('click',()=>setMobileView(true));
+function setMobileView(preview){els.workspace.classList.toggle('show-preview',preview);$('showEditor').classList.toggle('active',!preview);$('showPreview').classList.toggle('active',preview);if(preview)runPreview();}
+window.addEventListener('resize',()=>{$('previewSize').textContent=`Mobile · ${Math.round($('phone').getBoundingClientRect().width)}px`;});
+syncEditor();runPreview();
+})();
+</script>
+</body>
+</html>
