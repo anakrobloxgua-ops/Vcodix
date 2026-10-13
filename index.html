@@ -1,289 +1,415 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#ffe66d">
-<title>BRUTAL STUDIO — Mini Code Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5f0e8">
+<title>Mini Code Studio</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/material-darker.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#fffdf5;
-  --ink:#171717;
-  --yellow:#ffe66d;
-  --pink:#ff91c8;
-  --blue:#9ed9ff;
-  --green:#b9fbc0;
-  --border:3px solid var(--ink);
-  --shadow:4px 4px 0 var(--ink);
+:root {
+  --bg: #f5f0e8;
+  --paper: #fffdf8;
+  --ink: #171717;
+  --blue: #b8d8ff;
+  --yellow: #ffe66d;
+  --pink: #ffb8c6;
+  --green: #b9f5c7;
+  --border: 3px solid var(--ink);
+  --shadow: 5px 5px 0 var(--ink);
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--ink);
-  font-family:Arial,Helvetica,sans-serif;
-  background-image:radial-gradient(#17171718 1px,transparent 1px);
-  background-size:16px 16px;
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
 }
-button,textarea{font:inherit}
-button{cursor:pointer;color:var(--ink);font-weight:900}
-button:focus-visible,input:focus-visible{
-  outline:3px solid #367cff;outline-offset:3px
+
+button, input, textarea { font: inherit; }
+
+button {
+  border: var(--border);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+  padding: 10px 13px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .12s, box-shadow .12s;
 }
-.top{
-  background:var(--yellow);border-bottom:var(--border);
-  padding:14px 18px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
+
+button:active {
+  transform: translate(3px,3px);
+  box-shadow: none;
 }
-.brand{font-size:21px;font-weight:1000;letter-spacing:-1px}
-.brand span{background:white;border:2px solid;padding:2px 5px}
-.version{font-size:10px;font-weight:900;letter-spacing:1px;margin-top:6px}
-.status{font-size:11px;font-weight:900}
-main{max-width:1450px;margin:auto;padding:18px}
-.hero{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;margin:8px 0 22px;flex-wrap:wrap
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
-h1{font-size:clamp(28px,5vw,48px);line-height:1;
-  letter-spacing:-2px;margin:0 0 10px}
-.hero p{font-size:13px;line-height:1.6;margin:0;color:#444}
-.pill{
-  display:inline-block;background:var(--pink);border:2px solid;
-  padding:6px 9px;font-size:10px;font-weight:1000;margin-bottom:10px
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 18px;
+  border-bottom: var(--border);
+  background: var(--yellow);
 }
-.toolbar{display:flex;gap:9px;flex-wrap:wrap}
-.btn{
-  border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
-  background:white;padding:11px 14px;font-size:12px;
-  transition:transform .1s,box-shadow .1s
+
+.brand {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
-.btn:active{transform:translate(3px,3px);box-shadow:none}
-.btn.run{background:var(--green)}
-.btn.reset{background:var(--pink)}
-.btn.yellow{background:var(--yellow)}
-.workspace{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:18px;align-items:stretch
+
+.brand span { color: #315fd8; }
+
+.subtitle {
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 600;
 }
-.panel{
-  min-width:0;background:white;border:var(--border);
-  box-shadow:var(--shadow);overflow:hidden
+
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
 }
-.panel-head{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;padding:13px;background:var(--yellow);
-  border-bottom:var(--border)
+
+.primary { background: var(--green); }
+.blue { background: var(--blue); }
+.pink { background: var(--pink); }
+
+.app {
+  width: min(1400px, 100%);
+  margin: auto;
+  padding: 18px;
 }
-.panel-title{font-weight:1000;font-size:13px}
-.panel-sub{font-size:10px;font-weight:700;margin-top:4px}
-.panel-tools{display:flex;gap:6px;align-items:center}
-.mini{
-  border:2px solid;background:white;padding:6px 8px;
-  font-size:10px;font-weight:900
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
 }
-.tabs{
-  display:flex;background:#f3f0e6;
-  border-bottom:2px solid var(--ink);overflow-x:auto
+
+.section-head h1 {
+  font-size: clamp(24px, 5vw, 38px);
+  margin: 0;
+  letter-spacing: -1.5px;
 }
-.tab{
-  flex:1;min-width:65px;border:0;border-right:2px solid var(--ink);
-  padding:13px 8px;background:#f3f0e6;font-size:11px
+
+.tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
 }
-.tab:last-child{border-right:0}
-.tab.active{background:var(--pink)}
-.editor-wrap{height:430px;min-width:0;background:#21242c}
-.CodeMirror{
-  height:100%;font-family:monospace;font-size:13px;
-  line-height:1.65;padding-top:8px
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 17px;
+  align-items: start;
 }
-.CodeMirror-gutters{background:#21242c;border-right:1px solid #444}
-.CodeMirror-linenumber{color:#89909c}
-.editor-footer{
-  background:#f4f1e8;border-top:2px solid var(--ink);
-  display:flex;justify-content:space-between;gap:8px;
-  padding:10px;font-size:10px;font-weight:900
+
+.panel {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--paper);
+  border: var(--border);
+  box-shadow: var(--shadow);
 }
-.preview-head{
-  background:var(--blue);border-bottom:var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-  padding:13px;gap:8px
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-bottom: var(--border);
+  background: var(--blue);
+  font-weight: 700;
 }
-.preview-wrap{height:430px;background:white}
-iframe{width:100%;height:100%;display:block;border:0;background:white}
-.console{
-  border-top:var(--border);background:#181a20;color:#eee
+
+.editor-tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  background: #e9e5dd;
+  border-bottom: var(--border);
 }
-.console-head{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:11px 13px;border-bottom:1px solid #42454d;
-  font-size:11px;font-weight:900
+
+.tab {
+  flex: 1;
+  min-width: 75px;
+  border: 0;
+  border-right: 2px solid var(--ink);
+  box-shadow: none;
+  background: #e9e5dd;
+  padding: 13px 8px;
 }
-.console-body{
-  height:130px;overflow:auto;padding:10px;
-  font:12px/1.6 monospace;overflow-wrap:anywhere
+
+.tab.active {
+  background: var(--paper);
+  box-shadow: inset 0 -4px var(--ink);
 }
-.logline{padding:4px 5px;border-bottom:1px solid #30323a}
-.logline.error{color:#ff8b9a}
-.logline.warn{color:#ffe66d}
-.logline.info{color:#9ed9ff}
-.empty{color:#9399a5}
-.bottom-note{
-  display:flex;justify-content:space-between;gap:10px;
-  flex-wrap:wrap;margin:22px 0 5px;font-size:10px;font-weight:900
+
+.editor-host {
+  display: none;
+  height: 430px;
+  background: #1e1e1e;
 }
-.toast{
-  position:fixed;left:50%;bottom:22px;z-index:10;
-  transform:translate(-50%,20px);opacity:0;pointer-events:none;
-  background:var(--yellow);border:var(--border);box-shadow:var(--shadow);
-  padding:13px 17px;font-size:12px;font-weight:900;
-  transition:.2s;max-width:90%;text-align:center
+
+.editor-host.active { display: block; }
+
+.cm-editor {
+  height: 100%;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
 }
-.toast.show{opacity:1;transform:translate(-50%,0)}
-button:disabled{opacity:.5;cursor:wait}
-@media(max-width:760px){
-  main{padding:13px}
-  .top{padding:13px}
-  .workspace{grid-template-columns:minmax(0,1fr);gap:17px}
-  .hero{margin:8px 0 20px}
-  .editor-wrap{height:350px}
-  .preview-wrap{height:360px}
-  .toolbar{width:100%}
-  .toolbar .btn{flex:1}
-  .panel{box-shadow:4px 4px 0 var(--ink)}
+
+.cm-editor .cm-scroller {
+  overflow: auto;
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.65;
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition:none!important}
+
+.cm-editor.cm-focused { outline: none; }
+
+.editor-footer {
+  padding: 9px 12px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #eee9df;
+  border-top: var(--border);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 12px;
+  border-top: var(--border);
+}
+
+.preview-wrap {
+  padding: 10px;
+  background: #d9d5cd;
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  height: 430px;
+  border: 2px solid var(--ink);
+  background: white;
+}
+
+.console {
+  border-top: var(--border);
+}
+
+.console-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--yellow);
+  font-weight: 700;
+}
+
+.console-body {
+  height: 125px;
+  overflow: auto;
+  padding: 10px;
+  background: #171717;
+  color: #d6f5d6;
+  font: 12px/1.6 "JetBrains Mono", monospace;
+  overflow-wrap: anywhere;
+}
+
+.log {
+  white-space: pre-wrap;
+  border-bottom: 1px solid #333;
+  padding: 3px 0;
+}
+
+.log.error { color: #ff9999; }
+.log.warn { color: #ffe66d; }
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #26a65b;
+}
+
+.info {
+  margin-top: 20px;
+  padding: 13px;
+  border: var(--border);
+  background: var(--pink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 850px) {
+  .workspace { grid-template-columns: 1fr; }
+  .editor-host { height: 380px; }
+  .preview { height: 390px; }
+  .app { padding: 13px; }
+  .topbar { padding: 14px; }
+}
+
+@media (max-width: 430px) {
+  .brand { font-size: 20px; }
+  button { padding: 9px 10px; font-size: 12px; }
+  .editor-host { height: 340px; }
+  .preview { height: 350px; }
 }
 </style>
 </head>
 
 <body>
-<header class="top">
+<header class="topbar">
   <div>
-    <div class="brand">BRUTAL<span>STUDIO.</span></div>
-    <div class="version">MINI CODE LAB / V1.0</div>
+    <div class="brand">MINI<span>CODE</span> STUDIO</div>
+    <div class="subtitle">Your pocket-sized coding playground.</div>
   </div>
-  <div class="status" id="status">● READY TO CODE</div>
+
+  <div class="top-actions">
+    <button id="runBtn" class="primary">▶ Run</button>
+    <button id="downloadBtn" class="blue">↓ Export HTML</button>
+  </div>
 </header>
 
-<main>
-  <section class="hero">
-    <div>
-      <div class="pill">✳ YOUR CREATIVE PLAYGROUND</div>
-      <h1>WRITE IT.<br>RUN IT.</h1>
-      <p>Build something cool. See it happen instantly.</p>
-    </div>
-    <div class="toolbar">
-      <button class="btn run" id="runBtn">▶ RUN CODE</button>
-      <button class="btn yellow" id="autoBtn">⚡ AUTO: ON</button>
-      <button class="btn reset" id="resetBtn">↺ RESET</button>
-    </div>
-  </section>
+<main class="app">
+  <div class="section-head">
+    <h1>Build something.</h1>
+    <span class="tag">NEO BRUTALISM / V1.0</span>
+  </div>
 
-  <section class="workspace">
-    <div class="panel">
-      <div class="panel-head">
-        <div>
-          <div class="panel-title">✎ CODE EDITOR</div>
-          <div class="panel-sub">EDIT YOUR SOURCE</div>
-        </div>
-        <div class="panel-tools">
-          <button class="mini" id="copyBtn">COPY</button>
-          <button class="mini" id="downloadBtn">SAVE .HTML</button>
-        </div>
+  <div class="workspace">
+    <section class="panel">
+      <div class="panel-title">
+        <span>⌘ CODE EDITOR</span>
+        <span class="tag" id="lineInfo">Ready</span>
       </div>
 
-      <div class="tabs">
-        <button class="tab active" data-lang="html">🌐 HTML</button>
-        <button class="tab" data-lang="css">🎨 CSS</button>
-        <button class="tab" data-lang="js">⚡ JS</button>
+      <div class="editor-tabs">
+        <button class="tab active" data-tab="html">HTML</button>
+        <button class="tab" data-tab="css">CSS</button>
+        <button class="tab" data-tab="js">JS</button>
       </div>
 
-      <div class="editor-wrap">
-        <textarea id="code"></textarea>
-      </div>
+      <div id="editor-html" class="editor-host active"></div>
+      <div id="editor-css" class="editor-host"></div>
+      <div id="editor-js" class="editor-host"></div>
 
       <div class="editor-footer">
-        <span id="languageLabel">HTML · SOURCE</span>
-        <span id="lineCount">0 LINES</span>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="preview-head">
-        <div>
-          <div class="panel-title">◉ LIVE PREVIEW</div>
-          <div class="panel-sub">INTERACTIVE WEBSITE</div>
-        </div>
-        <div class="panel-tools">
-          <button class="mini" id="refreshBtn">↻ REFRESH</button>
-          <button class="mini" id="fullscreenBtn">⛶ EXPAND</button>
-        </div>
+        <span id="activeLanguage">HTML • CodeMirror 6</span>
+        <span id="charInfo">0 characters</span>
       </div>
 
-      <div class="preview-wrap" id="previewWrap">
+      <div class="tools">
+        <button id="autoBtn" class="primary">⚡ Auto Preview: ON</button>
+        <button id="copyBtn">▣ Copy All</button>
+        <button id="resetBtn" class="pink">↺ Reset</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <span>◫ LIVE PREVIEW</span>
+        <span class="status"><i class="dot"></i><span id="previewStatus">Ready</span></span>
+      </div>
+
+      <div class="preview-wrap">
         <iframe
           id="preview"
-          title="Live website preview"
+          class="preview"
+          title="Live HTML preview"
           sandbox="allow-scripts allow-forms allow-modals"
           referrerpolicy="no-referrer">
         </iframe>
       </div>
 
+      <div class="tools">
+        <button id="refreshBtn" class="blue">⟳ Refresh</button>
+        <button id="fullscreenBtn">⛶ Fullscreen</button>
+        <button id="clearConsoleBtn">⌫ Clear Console</button>
+      </div>
+
       <div class="console">
         <div class="console-head">
-          <span>⌘ CONSOLE</span>
-          <button class="mini" id="clearConsole">CLEAR</button>
+          <span>⌁ CONSOLE</span>
+          <span id="consoleCount">0 logs</span>
         </div>
-        <div class="console-body" id="consoleBody">
-          <div class="empty">Ready. Run your code to see console output.</div>
+        <div id="consoleBody" class="console-body">
+          <div class="log">Mini Code Studio ready.</div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <footer class="bottom-note">
-    <span>BRUTAL STUDIO © 2026</span>
-    <span>HTML + CSS + JS</span>
-    <span>BUILT FOR CREATORS ✳</span>
-  </footer>
+  <div class="info">
+    💡 TIPS: Gunakan tab HTML, CSS, dan JS untuk mengedit bagian berbeda.
+    Preview otomatis menunggu 700 ms setelah kamu berhenti mengetik.
+    Koneksi internet diperlukan untuk memuat editor CodeMirror 6.
+  </div>
 </main>
 
-<div class="toast" id="toast"></div>
+<script type="module">
+import { basicSetup } from "https://esm.sh/codemirror@6.0.2";
+import { EditorView, keymap } from "https://esm.sh/@codemirror/view@6.36.5";
+import { html } from "https://esm.sh/@codemirror/lang-html@6.4.9";
+import { css } from "https://esm.sh/@codemirror/lang-css@6.3.1";
+import { javascript } from "https://esm.sh/@codemirror/lang-javascript@6.2.2";
+import { oneDark } from "https://esm.sh/@codemirror/theme-one-dark@6.1.2";
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/xml/xml.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/javascript/javascript.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/css/css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/htmlmixed/htmlmixed.min.js"></script>
+const $ = (selector) => document.querySelector(selector);
 
-<script>
-(() => {
-"use strict";
-
-const $ = id => document.getElementById(id);
-
-const starter = {
-html: `<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>My Cool Website</title>
-</head>
-<body>
-  <main class="card">
-    <span class="tag">MY FIRST PROJECT</span>
-    <h1>Hello, World! ✨</h1>
-    <p>Website pertama gw dibuat di Brutal Studio.</p>
-    <button id="hello">CLICK ME!</button>
-    <p id="result"></p>
-  </main>
-</body>
-</html>`,
-css: `* {
+const defaults = {
+  html: `<main class="card">
+  <div class="badge">✦ MINI PROJECT</div>
+  <h1>Hello, world!</h1>
+  <p>Selamat datang di Mini Code Studio.</p>
+  <button id="helloBtn">Click me ↗</button>
+  <p id="message"></p>
+</main>`,
+  css: `* {
   box-sizing: border-box;
 }
 
@@ -292,371 +418,355 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background: #9ed9ff;
+  padding: 24px;
+  background: #f5f0e8;
   color: #171717;
+  font-family: Arial, sans-serif;
 }
 
 .card {
-  width: min(100%, 420px);
+  width: min(100%, 360px);
   padding: 28px;
-  background: #fffdf5;
-  border: 4px solid #171717;
-  box-shadow: 8px 8px 0 #171717;
+  border: 3px solid #171717;
+  box-shadow: 7px 7px 0 #171717;
+  background: white;
 }
 
-.tag {
-  background: #ff91c8;
-  padding: 6px;
+.badge {
   font-size: 11px;
-  font-weight: 900;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
 h1 {
   font-size: 36px;
-  letter-spacing: -2px;
+  margin-bottom: 8px;
 }
+
+p { line-height: 1.6; }
 
 button {
-  padding: 12px 20px;
+  padding: 12px 18px;
   background: #ffe66d;
-  border: 3px solid #171717;
-  box-shadow: 4px 4px 0 #171717;
-  font-weight: 900;
+  border: 2px solid #171717;
+  box-shadow: 3px 3px 0 #171717;
+  font-weight: bold;
   cursor: pointer;
-}
-
-button:active {
-  transform: translate(4px, 4px);
-  box-shadow: none;
 }`,
-js: `const button = document.querySelector("#hello");
-const result = document.querySelector("#result");
-
-let count = 0;
+  js: `const button = document.querySelector("#helloBtn");
+const message = document.querySelector("#message");
 
 button.addEventListener("click", () => {
-  count++;
-  result.textContent = "You clicked " + count + " times! 🎉";
-  console.log("Button clicked:", count);
-});
-
-console.log("Website is ready!");
-`
+  message.textContent = "Nice! Tombol berhasil diklik ✨";
+  console.log("Button clicked!");
+});`
 };
 
-let active = "html";
-let auto = true;
-let timer = null;
-let editor;
-let revision = 0;
-let lastRendered = 0;
+const sources = { ...defaults };
+const views = {};
+let activeTab = "html";
+let autoPreview = true;
+let previewTimer = null;
+let consoleLogs = [];
+const MAX_LOGS = 100;
+const PREVIEW_DELAY = 700;
 
-function toast(message) {
-  $("toast").textContent = message;
-  $("toast").classList.add("show");
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => {
-    $("toast").classList.remove("show");
-  }, 2000);
+const darkTheme = EditorView.theme({
+  "&": {
+    height: "100%",
+    color: "#e5e7eb",
+    backgroundColor: "#1e1e1e"
+  },
+  ".cm-content": {
+    caretColor: "#ffe66d",
+    fontFamily: '"JetBrains Mono", monospace'
+  },
+  ".cm-gutters": {
+    backgroundColor: "#1e1e1e",
+    color: "#777",
+    border: "none"
+  },
+  ".cm-activeLine": { backgroundColor: "#ffffff0a" },
+  ".cm-activeLineGutter": { backgroundColor: "#ffffff0a" },
+  "&.cm-focused .cm-cursor": { borderLeftColor: "#ffe66d" },
+  "&.cm-focused .cm-selectionBackground, ::selection": {
+    backgroundColor: "#345b91 !important"
+  }
+}, { dark: true });
+
+function languageFor(tab) {
+  if (tab === "html") return html();
+  if (tab === "css") return css();
+  return javascript();
 }
 
-function status(text) {
-  $("status").textContent = "● " + text;
+function countLines(text) {
+  return text.split("\n").length;
 }
 
-function getAllCode() {
-  return {
-    html: active === "html" ? editor.getValue() : sources.html,
-    css: active === "css" ? editor.getValue() : sources.css,
-    js: active === "js" ? editor.getValue() : sources.js
-  };
+function updateEditorInfo() {
+  const text = views[activeTab].state.doc.toString();
+  $("#charInfo").textContent = `${text.length.toLocaleString()} characters`;
+  $("#lineInfo").textContent = `${countLines(text)} lines`;
+  $("#activeLanguage").textContent =
+    `${activeTab.toUpperCase()} • CodeMirror 6`;
 }
 
-const sources = {...starter};
+function addLog(type, args) {
+  const message = args.map(value => {
+    if (typeof value === "string") return value;
+    try { return JSON.stringify(value); }
+    catch { return String(value); }
+  }).join(" ");
 
-function saveActive() {
-  if (editor) sources[active] = editor.getValue();
+  consoleLogs.push({ type, message });
+  if (consoleLogs.length > MAX_LOGS) consoleLogs.shift();
+  renderConsole();
 }
 
-function updateCounts() {
-  const value = editor.getValue();
-  $("lineCount").textContent =
-    value.split("\n").length + " LINES";
-  $("languageLabel").textContent =
-    active.toUpperCase() + " · SOURCE";
-}
+function renderConsole() {
+  const container = $("#consoleBody");
+  const fragment = document.createDocumentFragment();
 
-function showConsole(message, type = "info") {
-  const body = $("consoleBody");
-  const empty = body.querySelector(".empty");
-  if (empty) empty.remove();
-
-  const line = document.createElement("div");
-  line.className = "logline " + type;
-  line.textContent = message;
-  body.appendChild(line);
-
-  while (body.children.length > 150) {
-    body.firstElementChild.remove();
+  for (const entry of consoleLogs) {
+    const line = document.createElement("div");
+    line.className = "log" +
+      (entry.type === "error" ? " error" :
+       entry.type === "warn" ? " warn" : "");
+    line.textContent = `[${entry.type}] ${entry.message}`;
+    fragment.appendChild(line);
   }
 
-  body.scrollTop = body.scrollHeight;
+  container.replaceChildren(fragment);
+  container.scrollTop = container.scrollHeight;
+  $("#consoleCount").textContent = `${consoleLogs.length} logs`;
 }
 
 function clearConsole() {
-  $("consoleBody").replaceChildren();
-  const line = document.createElement("div");
-  line.className = "empty";
-  line.textContent = "Console cleared.";
-  $("consoleBody").appendChild(line);
+  consoleLogs = [];
+  renderConsole();
+}
+
+function getSource() {
+  return {
+    html: views.html.state.doc.toString(),
+    css: views.css.state.doc.toString(),
+    js: views.js.state.doc.toString()
+  };
 }
 
 function buildDocument() {
-  const code = getAllCode();
-  let html = code.html;
+  const source = getSource();
 
-  const style = `<style>\n${code.css}\n</style>`;
-  const script = `
-<script>
-(() => {
-  const safeString = value => {
-    try {
-      if (typeof value === "string") return value;
-      if (value instanceof Error) return value.stack || value.message;
-      return JSON.stringify(value);
-    } catch {
-      return String(value);
-    }
+  // JSON.stringify protects source text when it is inserted into
+  // the preview bootstrap script.
+  const bootstrap = `
+    (() => {
+      const send = (type, args) => {
+        try {
+          parent.postMessage({
+            channel: "MINICODE_STUDIO",
+            type,
+            args: Array.from(args).map(value => {
+              if (typeof value === "string") return value;
+              try { return JSON.parse(JSON.stringify(value)); }
+              catch { return String(value); }
+            })
+          }, "*");
+        } catch {}
+      };
+
+      ["log", "warn", "error", "info"].forEach(type => {
+        const original = console[type].bind(console);
+        console[type] = (...args) => {
+          send(type, args);
+          original(...args);
+        };
+      });
+
+      addEventListener("error", event => {
+        send("error", [event.message || "Unknown error"]);
+      });
+
+      addEventListener("unhandledrejection", event => {
+        send("error", ["Unhandled promise rejection", event.reason]);
+      });
+    })();
+  `;
+
+  return "<!DOCTYPE html>\n" +
+    "<html lang=\"en\"><head>" +
+    '<meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    "<style>\n" + source.css + "\n</style>" +
+    "</head><body>\n" +
+    source.html +
+    "\n<script>\n" + bootstrap + "\n<\/script>\n" +
+    "<script>\n" + source.js + "\n<\/script>\n" +
+    "</body></html>";
+}
+
+function runPreview() {
+  clearTimeout(previewTimer);
+  $("#previewStatus").textContent = "Updating…";
+
+  const documentText = buildDocument();
+  $("#preview").srcdoc = documentText;
+
+  $("#preview").onload = () => {
+    $("#previewStatus").textContent = "Updated";
   };
-
-  ["log","info","warn","error","debug"].forEach(type => {
-    const original = console[type].bind(console);
-    console[type] = (...args) => {
-      original(...args);
-      parent.postMessage({
-        channel: "BRUTAL_STUDIO",
-        type,
-        message: args.map(safeString).join(" ")
-      }, "*");
-    };
-  });
-
-  addEventListener("error", event => {
-    parent.postMessage({
-      channel: "BRUTAL_STUDIO",
-      type: "error",
-      message: event.message + " (line " + event.lineno + ")"
-    }, "*");
-  });
-
-  addEventListener("unhandledrejection", event => {
-    parent.postMessage({
-      channel: "BRUTAL_STUDIO",
-      type: "error",
-      message: "Unhandled promise rejection: " + safeString(event.reason)
-    }, "*");
-  });
-})();
-<\/script>
-<script>
-${code.js}
-<\/script>`;
-
-  if (/<head(?:\s[^>]*)?>/i.test(html)) {
-    html = html.replace(/<head(?:\s[^>]*)?>/i, match =>
-      match + "\n" + style + "\n" + script
-    );
-  } else {
-    html = style + "\n" + script + "\n" + html;
-  }
-
-  return html;
 }
 
-function runCode() {
-  saveActive();
-  clearTimeout(timer);
-  revision++;
-  const current = revision;
+function schedulePreview() {
+  if (!autoPreview) return;
+  clearTimeout(previewTimer);
+  $("#previewStatus").textContent = "Typing…";
+  previewTimer = setTimeout(runPreview, PREVIEW_DELAY);
+}
 
-  status("BUILDING...");
-  clearConsole();
+function switchTab(tab) {
+  activeTab = tab;
 
-  showConsole("Running preview...", "info");
+  document.querySelectorAll(".tab").forEach(button => {
+    button.classList.toggle("active", button.dataset.tab === tab);
+  });
 
+  document.querySelectorAll(".editor-host").forEach(host => {
+    host.classList.toggle("active", host.id === `editor-${tab}`);
+  });
+
+  // Refresh layout after showing the existing editor instance.
+  requestAnimationFrame(() => {
+    views[tab].requestMeasure();
+    views[tab].focus();
+    updateEditorInfo();
+  });
+}
+
+function createEditor(tab) {
+  const host = $(`#editor-${tab}`);
+
+  views[tab] = new EditorView({
+    doc: sources[tab],
+    parent: host,
+    extensions: [
+      basicSetup,
+      oneDark,
+      darkTheme,
+      languageFor(tab),
+      EditorView.lineWrapping,
+      EditorView.updateListener.of(update => {
+        if (!update.docChanged) return;
+        sources[tab] = update.state.doc.toString();
+        if (tab === activeTab) updateEditorInfo();
+        schedulePreview();
+      })
+    ]
+  });
+}
+
+async function copyText(text) {
   try {
-    $("preview").srcdoc = buildDocument();
-    lastRendered = current;
-    status("PREVIEW UPDATED");
-  } catch (error) {
-    showConsole(error.message, "error");
-    status("BUILD ERROR");
-  }
-
-  updateCounts();
-}
-
-function scheduleRun() {
-  saveActive();
-  updateCounts();
-
-  if (!auto) {
-    status("CHANGES NOT RUN");
-    return;
-  }
-
-  clearTimeout(timer);
-  status("EDITING...");
-  timer = setTimeout(runCode, 350);
-}
-
-function setLanguage(language) {
-  saveActive();
-  active = language;
-
-  editor.setOption(
-    "mode",
-    language === "html" ? "htmlmixed" :
-    language === "css" ? "css" : "javascript"
-  );
-
-  editor.setValue(sources[language]);
-
-  document.querySelectorAll(".tab").forEach(tab => {
-    tab.classList.toggle("active", tab.dataset.lang === language);
-  });
-
-  updateCounts();
-  editor.refresh();
-  status("EDITING " + language.toUpperCase());
-}
-
-function ensureEditor() {
-  if (editor) return true;
-
-  if (typeof CodeMirror === "undefined") {
-    toast("Editor library gagal dimuat. Periksa koneksi internet.");
-    status("LIBRARY ERROR");
-    return false;
-  }
-
-  editor = CodeMirror.fromTextArea($("code"), {
-    mode: "htmlmixed",
-    theme: "material-darker",
-    lineNumbers: true,
-    lineWrapping: true,
-    indentUnit: 2,
-    tabSize: 2,
-    indentWithTabs: false,
-    autofocus: false,
-    extraKeys: {
-      "Tab": cm => cm.replaceSelection("  "),
-      "Ctrl-Enter": runCode,
-      "Cmd-Enter": runCode
-    }
-  });
-
-  editor.on("change", scheduleRun);
-  updateCounts();
-  return true;
-}
-
-$("runBtn").addEventListener("click", runCode);
-
-$("autoBtn").addEventListener("click", () => {
-  auto = !auto;
-  $("autoBtn").textContent = auto ? "⚡ AUTO: ON" : "⚡ AUTO: OFF";
-  toast(auto ? "Auto preview enabled" : "Auto preview disabled");
-  if (auto) runCode();
-  else status("MANUAL MODE");
-});
-
-$("resetBtn").addEventListener("click", () => {
-  if (!confirm("Reset semua kode ke contoh awal?")) return;
-
-  Object.assign(sources, starter);
-  setLanguage(active);
-  runCode();
-  toast("Kode berhasil di-reset!");
-});
-
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    setLanguage(tab.dataset.lang);
-  });
-});
-
-$("refreshBtn").addEventListener("click", runCode);
-
-$("clearConsole").addEventListener("click", clearConsole);
-
-$("copyBtn").addEventListener("click", async () => {
-  saveActive();
-  try {
-    await navigator.clipboard.writeText(sources[active]);
-    toast("Kode berhasil disalin!");
+    await navigator.clipboard.writeText(text);
+    addLog("info", ["Copied to clipboard."]);
   } catch {
     const area = document.createElement("textarea");
-    area.value = sources[active];
+    area.value = text;
     document.body.appendChild(area);
     area.select();
-    const success = document.execCommand("copy");
+    const ok = document.execCommand("copy");
     area.remove();
-    toast(success ? "Kode berhasil disalin!" : "Copy gagal, salin manual.");
+    addLog(ok ? "info" : "error", [
+      ok ? "Copied to clipboard." : "Copy failed. Try selecting the text."
+    ]);
   }
-});
+}
 
-$("downloadBtn").addEventListener("click", () => {
-  saveActive();
-
-  const blob = new Blob([buildDocument()], {
-    type: "text/html;charset=utf-8"
-  });
-
+function downloadHTML() {
+  const blob = new Blob([buildDocument()], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "my-website.html";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "mini-code-project.html";
+  link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast("File HTML siap disimpan!");
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => switchTab(button.dataset.tab));
 });
 
-$("fullscreenBtn").addEventListener("click", async () => {
-  const wrap = $("previewWrap");
+$("#runBtn").addEventListener("click", runPreview);
+$("#refreshBtn").addEventListener("click", runPreview);
+$("#downloadBtn").addEventListener("click", downloadHTML);
 
+$("#autoBtn").addEventListener("click", () => {
+  autoPreview = !autoPreview;
+  $("#autoBtn").textContent =
+    `⚡ Auto Preview: ${autoPreview ? "ON" : "OFF"}`;
+  $("#autoBtn").classList.toggle("primary", autoPreview);
+  if (autoPreview) runPreview();
+  else clearTimeout(previewTimer);
+});
+
+$("#copyBtn").addEventListener("click", () => {
+  const source = getSource();
+  const all = [
+    "<!-- HTML -->",
+    source.html,
+    "\n/* CSS */\n",
+    source.css,
+    "\n// JavaScript\n",
+    source.js
+  ].join("\n");
+  copyText(all);
+});
+
+$("#resetBtn").addEventListener("click", () => {
+  if (!confirm("Reset semua kode ke contoh awal?")) return;
+
+  for (const tab of ["html", "css", "js"]) {
+    views[tab].dispatch({
+      changes: {
+        from: 0,
+        to: views[tab].state.doc.length,
+        insert: defaults[tab]
+      }
+    });
+  }
+
+  runPreview();
+});
+
+$("#clearConsoleBtn").addEventListener("click", clearConsole);
+
+$("#fullscreenBtn").addEventListener("click", async () => {
+  const panel = $("#preview").parentElement;
   try {
     if (!document.fullscreenElement) {
-      await wrap.requestFullscreen();
+      await panel.requestFullscreen();
     } else {
       await document.exitFullscreen();
     }
   } catch {
-    toast("Fullscreen tidak didukung browser ini.");
+    addLog("warn", ["Fullscreen is not supported in this browser."]);
   }
 });
 
 window.addEventListener("message", event => {
-  if (event.source !== $("preview").contentWindow) return;
-  if (!event.data || event.data.channel !== "BRUTAL_STUDIO") return;
+  if (event.source !== $("#preview").contentWindow) return;
+  if (!event.data || event.data.channel !== "MINICODE_STUDIO") return;
 
-  const type = ["log","info","warn","error","debug"].includes(event.data.type)
-    ? event.data.type : "info";
-
-  showConsole(String(event.data.message).slice(0, 4000), type);
+  addLog(event.data.type || "log", event.data.args || []);
 });
 
-if (ensureEditor()) {
-  setLanguage("html");
-  runCode();
-} else {
-  $("runBtn").disabled = true;
+for (const tab of ["html", "css", "js"]) {
+  createEditor(tab);
 }
-})();
+
+switchTab("html");
+runPreview();
 </script>
 </body>
 </html>
