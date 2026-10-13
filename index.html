@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f5f0e8">
-<title>Mini Code Studio</title>
+<title>Vcodix — Code Studio</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +26,8 @@
 
 * { box-sizing:border-box; }
 
+html { min-height:100%; }
+
 body {
   margin:0;
   background:var(--bg);
@@ -42,6 +44,7 @@ button {
   padding:10px 13px;
   cursor:pointer;
   box-shadow:3px 3px 0 var(--ink);
+  touch-action:manipulation;
 }
 
 button:active {
@@ -49,23 +52,31 @@ button:active {
   box-shadow:1px 1px 0 var(--ink);
 }
 
-button:disabled { opacity:.5; }
+button:focus-visible {
+  outline:3px solid #315fd8;
+  outline-offset:3px;
+}
+
+button:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+}
 
 .topbar {
   display:flex;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
-  gap:12px;
-  padding:16px;
+  gap:14px;
+  padding:15px 18px;
   background:var(--yellow);
   border-bottom:var(--border);
 }
 
 .brand {
-  font-size:22px;
+  font-size:27px;
   font-weight:700;
-  letter-spacing:-1px;
+  letter-spacing:-1.5px;
 }
 
 .brand span { color:#315fd8; }
@@ -76,7 +87,7 @@ button:disabled { opacity:.5; }
   margin-top:3px;
 }
 
-.actions,.tools {
+.top-actions,.tools {
   display:flex;
   gap:9px;
   flex-wrap:wrap;
@@ -87,31 +98,38 @@ button:disabled { opacity:.5; }
 .pink { background:var(--pink); }
 
 .app {
-  width:min(1400px,100%);
+  width:min(1500px,100%);
   margin:auto;
   padding:18px;
 }
 
-.section-head {
+.hero {
   display:flex;
   justify-content:space-between;
-  align-items:center;
+  align-items:flex-start;
   flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:16px;
+  gap:12px;
+  margin-bottom:18px;
 }
 
-.section-head h1 {
-  font-size:clamp(25px,5vw,38px);
-  letter-spacing:-1.5px;
+.hero h1 {
+  font-size:clamp(28px,5vw,42px);
+  letter-spacing:-1.8px;
   margin:0;
 }
 
-.tag {
+.hero p {
+  margin:7px 0 0;
+  max-width:650px;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.badge {
   display:inline-block;
   border:2px solid var(--ink);
+  padding:6px 10px;
   background:var(--paper);
-  padding:5px 9px;
   font-size:11px;
   font-weight:700;
 }
@@ -119,15 +137,15 @@ button:disabled { opacity:.5; }
 .workspace {
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:17px;
+  gap:18px;
   align-items:start;
 }
 
 .panel {
   min-width:0;
   overflow:hidden;
-  border:var(--border);
   background:var(--paper);
+  border:var(--border);
   box-shadow:var(--shadow);
 }
 
@@ -136,7 +154,7 @@ button:disabled { opacity:.5; }
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
-  gap:8px;
+  gap:9px;
   padding:12px;
   background:var(--blue);
   border-bottom:var(--border);
@@ -145,17 +163,17 @@ button:disabled { opacity:.5; }
 
 .tabs {
   display:flex;
-  border-bottom:var(--border);
   background:#e9e5dd;
+  border-bottom:var(--border);
 }
 
 .tab {
   flex:1;
   min-width:0;
+  padding:13px 5px;
   border:0;
   border-right:2px solid var(--ink);
   box-shadow:none;
-  padding:13px 5px;
   background:#e9e5dd;
 }
 
@@ -168,7 +186,8 @@ button:disabled { opacity:.5; }
 
 .editor-host {
   display:none;
-  height:430px;
+  height:440px;
+  min-width:0;
   background:#1e1e1e;
 }
 
@@ -176,6 +195,7 @@ button:disabled { opacity:.5; }
 
 .cm-editor {
   height:100%;
+  width:100%;
   font-family:"JetBrains Mono",monospace;
   font-size:13px;
 }
@@ -183,16 +203,29 @@ button:disabled { opacity:.5; }
 .cm-editor .cm-scroller {
   overflow:auto;
   font-family:"JetBrains Mono",monospace;
-  line-height:1.65;
+  line-height:1.7;
+  overscroll-behavior:contain;
 }
 
+.cm-editor .cm-content {
+  padding:10px 0 30px;
+  caret-color:#ffe66d;
+}
+
+.cm-editor .cm-line { padding:0 5px; }
+
 .cm-editor.cm-focused { outline:none; }
+
+.cm-editor .cm-gutters {
+  user-select:none;
+  -webkit-user-select:none;
+}
 
 .editor-footer {
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
-  gap:7px;
+  gap:8px;
   padding:9px 12px;
   background:#eee9df;
   border-top:var(--border);
@@ -213,7 +246,7 @@ button:disabled { opacity:.5; }
 .preview {
   display:block;
   width:100%;
-  height:430px;
+  height:440px;
   border:2px solid var(--ink);
   background:white;
 }
@@ -223,6 +256,8 @@ button:disabled { opacity:.5; }
 .console-head {
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  gap:8px;
   padding:10px 12px;
   background:var(--yellow);
   font-weight:700;
@@ -234,7 +269,7 @@ button:disabled { opacity:.5; }
   padding:10px;
   background:#171717;
   color:#d6f5d6;
-  font:12px/1.6 "JetBrains Mono",monospace;
+  font:12px/1.7 "JetBrains Mono",monospace;
   overflow-wrap:anywhere;
 }
 
@@ -251,7 +286,7 @@ button:disabled { opacity:.5; }
   display:inline-flex;
   align-items:center;
   gap:6px;
-  font-size:12px;
+  font-size:11px;
 }
 
 .dot {
@@ -261,17 +296,26 @@ button:disabled { opacity:.5; }
   background:#26a65b;
 }
 
-.info {
+.footer {
   margin-top:20px;
-  padding:13px;
+  padding:16px;
   border:var(--border);
   background:var(--pink);
-  font-size:12px;
-  font-weight:600;
-  line-height:1.6;
+  line-height:1.7;
 }
 
-/* Custom fullscreen overlay: avoids relying on browser fullscreen API */
+.footer-title {
+  font-size:17px;
+  font-weight:700;
+}
+
+.footer p {
+  margin:5px 0;
+  font-size:13px;
+}
+
+.footer small { font-size:11px; }
+
 #fullscreenOverlay {
   position:fixed;
   inset:0;
@@ -288,8 +332,8 @@ button:disabled { opacity:.5; }
 .fullscreen-bar {
   flex-shrink:0;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
   padding:10px;
   background:var(--yellow);
@@ -305,6 +349,7 @@ button:disabled { opacity:.5; }
   display:block;
   flex:1;
   width:100%;
+  height:100%;
   min-height:0;
   border:0;
   background:white;
@@ -314,16 +359,17 @@ body.overlay-open { overflow:hidden; }
 
 @media(max-width:850px) {
   .workspace { grid-template-columns:1fr; }
-  .editor-host { height:380px; }
-  .preview { height:390px; }
+  .editor-host { height:390px; }
+  .preview { height:400px; }
   .app { padding:13px; }
 }
 
 @media(max-width:430px) {
   .topbar { padding:13px; }
-  .brand { font-size:20px; }
-  button { padding:9px 10px; font-size:12px; }
-  .editor-host { height:340px; }
+  .brand { font-size:25px; }
+  .app { padding:12px; }
+  button { padding:10px; font-size:12px; }
+  .editor-host { height:350px; }
   .preview { height:350px; }
   .fullscreen-bar button { padding:9px 12px; }
 }
@@ -333,32 +379,39 @@ body.overlay-open { overflow:hidden; }
 <body>
 <header class="topbar">
   <div>
-    <div class="brand">MINI<span>CODE</span> STUDIO</div>
-    <div class="subtitle">Your pocket-sized coding playground.</div>
+    <div class="brand">VCO<span>DIX</span></div>
+    <div class="subtitle">Fast Code. Instant Preview.</div>
   </div>
-  <div class="actions">
-    <button id="runBtn" class="primary">▶ Run</button>
-    <button id="downloadBtn" class="blue">↓ Export HTML</button>
+
+  <div class="top-actions">
+    <button id="runBtn" class="primary">▶ Run Preview</button>
+    <button id="exportBtn" class="blue">↓ Export HTML</button>
   </div>
 </header>
 
 <main class="app">
-  <div class="section-head">
-    <h1>Build something.</h1>
-    <span class="tag">NEO BRUTALISM / V1.1</span>
-  </div>
+  <section class="hero">
+    <div>
+      <h1>Code it. See it.</h1>
+      <p>
+        Tulis HTML, CSS, dan JavaScript dalam satu workspace.
+        Preview project kamu dengan cepat, langsung dari browser.
+      </p>
+    </div>
+    <span class="badge">VCODIX / V1.00</span>
+  </section>
 
   <div class="workspace">
     <section class="panel">
       <div class="panel-title">
         <span>⌘ CODE EDITOR</span>
-        <span class="tag" id="lineInfo">0 lines</span>
+        <span class="badge" id="lineInfo">0 lines</span>
       </div>
 
       <div class="tabs">
         <button class="tab active" data-tab="html">HTML</button>
         <button class="tab" data-tab="css">CSS</button>
-        <button class="tab" data-tab="js">JS</button>
+        <button class="tab" data-tab="js">JavaScript</button>
       </div>
 
       <div id="editor-html" class="editor-host active"></div>
@@ -366,14 +419,13 @@ body.overlay-open { overflow:hidden; }
       <div id="editor-js" class="editor-host"></div>
 
       <div class="editor-footer">
-        <span id="activeLanguage">HTML • CodeMirror 6</span>
+        <span id="activeLanguage">HTML · CodeMirror 6</span>
         <span id="charInfo">0 characters</span>
       </div>
 
       <div class="tools">
-        <button id="autoBtn" class="primary">⚡ Auto Preview: ON</button>
-        <button id="copyBtn">▣ Copy All</button>
-        <button id="resetBtn" class="pink">⌫ Clear All</button>
+        <button id="autoBtn" class="primary">Auto Preview: ON</button>
+        <button id="clearBtn" class="pink">Clear All Code</button>
       </div>
     </section>
 
@@ -381,45 +433,50 @@ body.overlay-open { overflow:hidden; }
       <div class="panel-title">
         <span>◫ LIVE PREVIEW</span>
         <span class="status">
-          <i class="dot"></i><span id="previewStatus">Ready</span>
+          <i class="dot"></i>
+          <span id="previewStatus">Ready</span>
         </span>
       </div>
 
       <div class="preview-wrap">
-        <iframe id="preview" class="preview"
-          title="Live preview"
+        <iframe
+          id="preview"
+          class="preview"
+          title="Vcodix live preview"
           sandbox="allow-scripts allow-forms allow-modals"
           referrerpolicy="no-referrer"></iframe>
       </div>
 
       <div class="tools">
-        <button id="refreshBtn" class="blue">⟳ Refresh</button>
-        <button id="fullscreenBtn">⛶ Fullscreen</button>
-        <button id="clearConsoleBtn">⌫ Clear Console</button>
+        <button id="fullscreenBtn" class="blue">⛶ Fullscreen Preview</button>
       </div>
 
       <div class="console">
         <div class="console-head">
-          <span>⌁ CONSOLE</span>
-          <span id="consoleCount">0 logs</span>
+          <span>⌁ DEVELOPER CONSOLE</span>
+          <button id="clearConsoleBtn">Clear Logs</button>
         </div>
         <div id="consoleBody" class="console-body"></div>
       </div>
     </section>
   </div>
 
-  <div class="info">
-    💡 Editor dimulai kosong. Kode tidak disimpan otomatis, jadi refresh halaman
-    akan mengosongkan editor. Gunakan Export HTML untuk menyimpan hasil project.
-  </div>
+  <footer class="footer">
+    <div class="footer-title">Vcodix · V1.00</div>
+    <p><strong>Developer:</strong> Skyy NASGOR</p>
+    <p><strong>Misi:</strong> Membantu para developer yang ingin melakukan preview cepat, secepat VS Code, dan server bergerak cepat seperti kilat!</p>
+    <small>Built for developers. Designed for speed.</small>
+  </footer>
 </main>
 
 <div id="fullscreenOverlay" aria-hidden="true">
   <div class="fullscreen-bar">
-    <span class="fullscreen-title">◫ LIVE PREVIEW</span>
-    <button id="closeFullscreen" class="pink">✕ Close</button>
+    <span class="fullscreen-title">VCODIX · LIVE PREVIEW</span>
+    <button id="closeFullscreen" class="pink">✕ Close Preview</button>
   </div>
-  <iframe id="fullscreenFrame" title="Fullscreen preview"
+  <iframe
+    id="fullscreenFrame"
+    title="Vcodix fullscreen preview"
     sandbox="allow-scripts allow-forms allow-modals"
     referrerpolicy="no-referrer"></iframe>
 </div>
@@ -434,17 +491,17 @@ import { oneDark } from "https://esm.sh/@codemirror/theme-one-dark@6.1.2";
 
 const $ = selector => document.querySelector(selector);
 
-/* All three editors intentionally start EMPTY.
-   No starter template and no localStorage restoration. */
 const views = {};
-const emptySources = { html:"", css:"", js:"" };
+const tabs = ["html", "css", "js"];
 
 let activeTab = "html";
 let autoPreview = true;
 let previewTimer = null;
+let previewRevision = 0;
 let consoleLogs = [];
+
 const MAX_LOGS = 100;
-const PREVIEW_DELAY = 700;
+const PREVIEW_DELAY = 650;
 
 const darkTheme = EditorView.theme({
   "&": {
@@ -461,9 +518,18 @@ const darkTheme = EditorView.theme({
     color:"#777",
     border:"none"
   },
-  ".cm-activeLine": { backgroundColor:"#ffffff0a" },
-  ".cm-activeLineGutter": { backgroundColor:"#ffffff0a" },
-  "&.cm-focused .cm-cursor": { borderLeftColor:"#ffe66d" }
+  ".cm-activeLine": {
+    backgroundColor:"#ffffff0a"
+  },
+  ".cm-activeLineGutter": {
+    backgroundColor:"#ffffff0a"
+  },
+  "&.cm-focused .cm-cursor": {
+    borderLeftColor:"#ffe66d"
+  },
+  "&.cm-focused": {
+    outline:"none"
+  }
 }, {dark:true});
 
 function getSource() {
@@ -476,21 +542,15 @@ function getSource() {
 
 function updateEditorInfo() {
   const text = views[activeTab].state.doc.toString();
-  $("#charInfo").textContent = `${text.length} characters`;
-  $("#lineInfo").textContent = `${text.length ? text.split("\n").length : 0} lines`;
-  $("#activeLanguage").textContent = `${activeTab.toUpperCase()} • CodeMirror 6`;
-}
 
-function addLog(type, args) {
-  const message = args.map(value => {
-    if (typeof value === "string") return value;
-    try { return JSON.stringify(value); }
-    catch { return String(value); }
-  }).join(" ");
+  $("#charInfo").textContent =
+    `${text.length.toLocaleString()} characters`;
 
-  consoleLogs.push({type,message});
-  if (consoleLogs.length > MAX_LOGS) consoleLogs.shift();
-  renderConsole();
+  $("#lineInfo").textContent =
+    `${text.length ? text.split("\n").length : 0} lines`;
+
+  $("#activeLanguage").textContent =
+    `${activeTab.toUpperCase()} · CodeMirror 6`;
 }
 
 function renderConsole() {
@@ -502,13 +562,36 @@ function renderConsole() {
     line.className = "log" +
       (entry.type === "error" ? " error" :
        entry.type === "warn" ? " warn" : "");
+
     line.textContent = `[${entry.type}] ${entry.message}`;
     fragment.appendChild(line);
   }
 
   body.replaceChildren(fragment);
   body.scrollTop = body.scrollHeight;
-  $("#consoleCount").textContent = `${consoleLogs.length} logs`;
+
+  $("#clearConsoleBtn").textContent =
+    `Clear Logs (${consoleLogs.length})`;
+}
+
+function addLog(type, args) {
+  const message = args.map(value => {
+    if (typeof value === "string") return value;
+
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
+  }).join(" ");
+
+  consoleLogs.push({type, message});
+
+  if (consoleLogs.length > MAX_LOGS) {
+    consoleLogs.shift();
+  }
+
+  renderConsole();
 }
 
 function clearConsole() {
@@ -516,7 +599,10 @@ function clearConsole() {
   renderConsole();
 }
 
-/* A separate preview bootstrap captures console messages. */
+/*
+  This bootstrap forwards preview console messages.
+  The iframe is sandboxed without same-origin permission.
+*/
 function buildDocument() {
   const source = getSource();
 
@@ -525,7 +611,8 @@ function buildDocument() {
   const send = (type, args) => {
     try {
       parent.postMessage({
-        channel: "MINICODE_STUDIO",
+        channel: "VCODIX_PREVIEW",
+        revision: ${previewRevision},
         type,
         args: Array.from(args).map(value => {
           if (typeof value === "string") return value;
@@ -571,29 +658,33 @@ ${source.html}
 
 function runPreview() {
   clearTimeout(previewTimer);
-  $("#previewStatus").textContent = "Updating…";
+
+  previewRevision++;
+  $("#previewStatus").textContent = "Updating...";
 
   const documentText = buildDocument();
+
   $("#preview").srcdoc = documentText;
 
-  // Keep fullscreen preview in sync when it is open.
   if ($("#fullscreenOverlay").classList.contains("open")) {
     $("#fullscreenFrame").srcdoc = documentText;
   }
 
   $("#preview").onload = () => {
-    $("#previewStatus").textContent = "Updated";
+    $("#previewStatus").textContent = "Preview ready";
   };
 }
 
 function schedulePreview() {
   if (!autoPreview) return;
+
   clearTimeout(previewTimer);
-  $("#previewStatus").textContent = "Typing…";
+  $("#previewStatus").textContent = "Waiting...";
+
   previewTimer = setTimeout(runPreview, PREVIEW_DELAY);
 }
 
-function languageFor(tab) {
+function getLanguage(tab) {
   if (tab === "html") return html();
   if (tab === "css") return css();
   return javascript();
@@ -601,16 +692,18 @@ function languageFor(tab) {
 
 function createEditor(tab) {
   views[tab] = new EditorView({
-    doc: emptySources[tab],
-    parent: $(`#editor-${tab}`),
-    extensions: [
+    doc:"",
+    parent:$(`#editor-${tab}`),
+    extensions:[
       basicSetup,
       oneDark,
       darkTheme,
-      languageFor(tab),
+      getLanguage(tab),
       EditorView.lineWrapping,
+
       EditorView.updateListener.of(update => {
         if (!update.docChanged) return;
+
         if (tab === activeTab) updateEditorInfo();
         schedulePreview();
       })
@@ -622,11 +715,11 @@ function switchTab(tab) {
   activeTab = tab;
 
   document.querySelectorAll(".tab").forEach(button => {
-    button.classList.toggle("active",button.dataset.tab === tab);
+    button.classList.toggle("active", button.dataset.tab === tab);
   });
 
   document.querySelectorAll(".editor-host").forEach(host => {
-    host.classList.toggle("active",host.id === `editor-${tab}`);
+    host.classList.toggle("active", host.id === `editor-${tab}`);
   });
 
   requestAnimationFrame(() => {
@@ -635,84 +728,12 @@ function switchTab(tab) {
   });
 }
 
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    addLog("info",["Copied to clipboard."]);
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = text;
-    document.body.appendChild(area);
-    area.select();
-    const ok = document.execCommand("copy");
-    area.remove();
-    addLog(ok ? "info" : "error",[
-      ok ? "Copied to clipboard." : "Copy failed."
-    ]);
+function clearAllCode() {
+  if (!confirm("Yakin ingin menghapus semua kode di HTML, CSS, dan JavaScript?")) {
+    return;
   }
-}
 
-function downloadHTML() {
-  const blob = new Blob([buildDocument()], {
-    type:"text/html;charset=utf-8"
-  });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "mini-code-project.html";
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url),1000);
-}
-
-/* Custom fullscreen overlay: no browser fullscreen prompt.
-   The preview fills the app viewport and has an explicit Close button. */
-function openFullscreen() {
-  const overlay = $("#fullscreenOverlay");
-  $("#fullscreenFrame").srcdoc = buildDocument();
-  overlay.classList.add("open");
-  overlay.setAttribute("aria-hidden","false");
-  document.body.classList.add("overlay-open");
-}
-
-function closeFullscreen() {
-  const overlay = $("#fullscreenOverlay");
-  overlay.classList.remove("open");
-  overlay.setAttribute("aria-hidden","true");
-  document.body.classList.remove("overlay-open");
-}
-
-document.querySelectorAll(".tab").forEach(button => {
-  button.addEventListener("click",() => switchTab(button.dataset.tab));
-});
-
-$("#runBtn").addEventListener("click",runPreview);
-$("#refreshBtn").addEventListener("click",runPreview);
-$("#downloadBtn").addEventListener("click",downloadHTML);
-$("#fullscreenBtn").addEventListener("click",openFullscreen);
-$("#closeFullscreen").addEventListener("click",closeFullscreen);
-
-$("#autoBtn").addEventListener("click",() => {
-  autoPreview = !autoPreview;
-  $("#autoBtn").textContent =
-    `⚡ Auto Preview: ${autoPreview ? "ON" : "OFF"}`;
-  $("#autoBtn").classList.toggle("primary",autoPreview);
-  if (autoPreview) runPreview();
-  else clearTimeout(previewTimer);
-});
-
-$("#copyBtn").addEventListener("click",() => {
-  const source = getSource();
-  copyText(
-    "<!-- HTML -->\n" + source.html +
-    "\n/* CSS */\n" + source.css +
-    "\n// JavaScript\n" + source.js
-  );
-});
-
-$("#resetBtn").addEventListener("click",() => {
-  if (!confirm("Kosongkan semua kode?")) return;
-
-  for (const tab of ["html","css","js"]) {
+  for (const tab of tabs) {
     views[tab].dispatch({
       changes:{
         from:0,
@@ -723,25 +744,102 @@ $("#resetBtn").addEventListener("click",() => {
   }
 
   clearConsole();
-  runPreview();
   switchTab("html");
+  runPreview();
+}
+
+function exportHTML() {
+  const blob = new Blob(
+    [buildDocument()],
+    {type:"text/html;charset=utf-8"}
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "vcodix-project.html";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+function openFullscreen() {
+  const overlay = $("#fullscreenOverlay");
+
+  $("#fullscreenFrame").srcdoc = buildDocument();
+
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+  document.body.classList.add("overlay-open");
+}
+
+function closeFullscreen() {
+  const overlay = $("#fullscreenOverlay");
+
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  document.body.classList.remove("overlay-open");
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    switchTab(button.dataset.tab);
+  });
 });
 
-$("#clearConsoleBtn").addEventListener("click",clearConsole);
+$("#runBtn").addEventListener("click", runPreview);
+$("#exportBtn").addEventListener("click", exportHTML);
+$("#clearBtn").addEventListener("click", clearAllCode);
+$("#fullscreenBtn").addEventListener("click", openFullscreen);
+$("#closeFullscreen").addEventListener("click", closeFullscreen);
+$("#clearConsoleBtn").addEventListener("click", clearConsole);
 
-window.addEventListener("message",event => {
-  if (event.source !== $("#preview").contentWindow &&
-      event.source !== $("#fullscreenFrame").contentWindow) return;
+$("#autoBtn").addEventListener("click", () => {
+  autoPreview = !autoPreview;
 
-  if (!event.data || event.data.channel !== "MINICODE_STUDIO") return;
-  addLog(event.data.type || "log",event.data.args || []);
+  $("#autoBtn").textContent =
+    `Auto Preview: ${autoPreview ? "ON" : "OFF"}`;
+
+  $("#autoBtn").classList.toggle("primary", autoPreview);
+
+  if (autoPreview) {
+    runPreview();
+  } else {
+    clearTimeout(previewTimer);
+    $("#previewStatus").textContent = "Manual mode";
+  }
 });
 
-document.addEventListener("keydown",event => {
+window.addEventListener("message", event => {
+  const preview = $("#preview").contentWindow;
+  const fullscreen = $("#fullscreenFrame").contentWindow;
+
+  if (event.source !== preview && event.source !== fullscreen) {
+    return;
+  }
+
+  const data = event.data;
+
+  if (!data || data.channel !== "VCODIX_PREVIEW") return;
+  if (data.revision !== previewRevision) return;
+
+  addLog(data.type || "log", data.args || []);
+});
+
+document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeFullscreen();
 });
 
-for (const tab of ["html","css","js"]) createEditor(tab);
+/*
+  No global key handler prevents Space or Enter.
+  CodeMirror keeps its own standard keyboard editing behavior.
+*/
+for (const tab of tabs) {
+  createEditor(tab);
+}
 
 switchTab("html");
 clearConsole();
